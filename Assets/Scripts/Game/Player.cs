@@ -12,6 +12,8 @@ public class Player : MonoBehaviour
         Down
     }
 
+    public float speed;
+
     private MoveDirection mCurrentDirection;
     private bool mIsMoving;
 
@@ -45,6 +47,12 @@ public class Player : MonoBehaviour
         {
             mCurrentDirection = MoveDirection.Right;
             mIsMoving = true;
+
+            NetPacket packet = NetPacket.Alloc();
+            short protocol = PROTOCOL.CS_PLAYER_MOVE_START;
+            packet.Push(protocol).Push(transform.position.x).Push(transform.position.z);
+
+            NetworkService.Instance.SendPacket(packet);
         }
 
         if (Input.GetKeyDown(KeyCode.S))
@@ -59,6 +67,12 @@ public class Player : MonoBehaviour
             Input.GetKeyUp(KeyCode.S))
         {
             mIsMoving = false;
+
+            NetPacket packet = NetPacket.Alloc();
+            short protocol = PROTOCOL.CS_PLAYER_MOVE_END;
+            packet.Push(protocol).Push(transform.position.x).Push(transform.position.z);
+
+            NetworkService.Instance.SendPacket(packet);
         }
     }
 
@@ -68,23 +82,25 @@ public class Player : MonoBehaviour
         {
             if(mCurrentDirection == MoveDirection.Left)
             {
-                transform.Translate(Vector3.left * Time.deltaTime * 20);
+                transform.Translate(Vector3.left * Time.deltaTime * speed);
             }
 
             if (mCurrentDirection == MoveDirection.Up)
             {
-                transform.Translate(Vector3.forward * Time.deltaTime * 20);
+                transform.Translate(Vector3.forward * Time.deltaTime * speed);
             }
 
             if (mCurrentDirection == MoveDirection.Right)
             {
-                transform.Translate(Vector3.right * Time.deltaTime * 20);
+                transform.Translate(Vector3.right * Time.deltaTime * speed);
             }
 
             if (mCurrentDirection == MoveDirection.Down)
             {
-                transform.Translate(Vector3.back * Time.deltaTime * 20);
+                transform.Translate(Vector3.back * Time.deltaTime * speed);
             }
+
+            //Debug.Log("X : " + transform.position.x + ", Z : " + transform.position.z);
         }
     }
 }

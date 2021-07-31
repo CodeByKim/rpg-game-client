@@ -3,8 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public static class PROTOCOL
+{
+    public const short CS_PLAYER_MOVE_START = 0;
+    public const short CS_PLAYER_MOVE_END = 1;
+    public const short SC_PLAYER_MOVE_START = 2;
+    public const short SC_PLAYER_MOVE_END = 3;
+}
+
 public class TestMessageHandler : MonoBehaviour, IMessageHandler
 {
+    public Player player;
+
     public void OnConnect()
     {
         Debug.Log("On Connect!");
@@ -14,18 +24,22 @@ public class TestMessageHandler : MonoBehaviour, IMessageHandler
     {
         
     }
-
-    /*
-     * NetworkService의 업데이트에서 계속 호출
-     */ 
+    
     public void OnPacketReceive(NetPacket packet)
     {
-        int testData1;
-        int testData2;
-        int testData3;
+        short protocol;
+        packet.Pop(out protocol);
 
-        packet.Pop(out testData1).Pop(out testData2).Pop(out testData3);
-        Debug.Log(String.Format("Packet Receive : {0},{1},{2}", testData1, testData2, testData3));
+        switch (protocol)
+        {
+            case PROTOCOL.SC_PLAYER_MOVE_START:
+                SC_PLAYER_MOVE_START(packet);
+                break;
+
+            case PROTOCOL.SC_PLAYER_MOVE_END:
+                SC_PLAYER_MOVE_END(packet);
+                break;
+        }
     }
 
     private void Start()
@@ -38,16 +52,21 @@ public class TestMessageHandler : MonoBehaviour, IMessageHandler
     
     private void Update()
     {
-        if(Input.GetKey(KeyCode.A))
-        {
-            NetPacket packet = NetPacket.Alloc();
+        
+    }
 
-            int testData1 = 10;
-            int testData2 = 20;
-            int testData3 = 30;
+    private void SC_PLAYER_MOVE_START(NetPacket packet)
+    {
 
-            packet.Push(testData1).Push(testData2).Push(testData3);            
-            NetworkService.Instance.SendPacket(packet);
-        }
+    }
+
+    private void SC_PLAYER_MOVE_END(NetPacket packet)
+    {
+        float x;
+        float z;
+
+        packet.Pop(out x).Pop(out z);
+
+        Debug.Log(string.Format("server x : {0}, local x : {1}", x, player.transform.position.x));
     }
 }
