@@ -6,5 +6,5 @@ public interface IMessageHandler
 {
     void OnConnect();
     void OnDisconnect();
-    void OnPacketReceive(NetPacket packet);    
+    void OnPacketReceive(NetPacket packet);
 }

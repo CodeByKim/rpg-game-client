@@ -88,6 +88,11 @@ public class Connector
         PostSend();
     }
 
+    public void Close()
+    {
+        mSocket.Close();
+    }
+
     public string GetIP()
     {
         return mIP;

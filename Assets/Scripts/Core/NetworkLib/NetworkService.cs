@@ -79,4 +79,9 @@ public class NetworkService : MonoBehaviour
             }
         });
     }
+
+    private void OnApplicationQuit()
+    {
+        mConnector.Close();
+    }
 }
