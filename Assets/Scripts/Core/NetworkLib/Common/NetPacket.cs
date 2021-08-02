@@ -35,8 +35,10 @@ public class NetPacket
 {
     public enum PacketType
     {
+        Connect,
+        Disconnect,
         Send,
-        Recv
+        Receive
     }
 
     private PacketHeader mHeader;
@@ -48,7 +50,13 @@ public class NetPacket
     private PacketType mPacketType;
 
     private static NetPacketAllocator mSendPacketAllocator = new NetPacketAllocator(50, PacketType.Send);
-    private static NetPacketAllocator mRecvPacketAllocator = new NetPacketAllocator(50, PacketType.Recv);
+    private static NetPacketAllocator mRecvPacketAllocator = new NetPacketAllocator(50, PacketType.Receive);
+
+    public PacketType Type
+    {
+        get { return mPacketType; }
+        set { mPacketType = value; }
+    }
 
     public static NetPacket Alloc()
     {
@@ -71,6 +79,7 @@ public class NetPacket
         }
         else
         {
+            packet.Type = PacketType.Receive;
             mRecvPacketAllocator.Push(packet);
         }       
     }
@@ -142,9 +151,14 @@ public class NetPacket
 
     private void SetBuffer(byte[] buffer)
     {
+        if (buffer == null)
+            return;
+
         mBuffer = buffer;
         mSize = buffer.Length;
     }
+
+    
 
     #region Push Data
     public NetPacket Push(byte value)

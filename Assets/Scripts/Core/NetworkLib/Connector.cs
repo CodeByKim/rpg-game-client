@@ -64,7 +64,7 @@ public class Connector
         SocketAsyncEventArgs args = new SocketAsyncEventArgs();
         args.RemoteEndPoint = new IPEndPoint(IPAddress.Parse(mIP), mPort);
         args.Completed += OnConnect;
-        mSocket.ConnectAsync(args);        
+        mSocket.ConnectAsync(args);
     }
 
     public void SendPacket(NetPacket packet)
@@ -156,6 +156,13 @@ public class Connector
     private void OnReceive(object sender, SocketAsyncEventArgs e)
     {
         int recvBytes = e.BytesTransferred;        
+
+        if(recvBytes == 0)
+        {
+            //TODO : 서버와의 통신에서 끊어짐            
+            //나중에 Disconnect 이벤트 연결해야 함
+        }
+
         mRecvPacketRingBuffer.Enqueue(mRecvBuffer, recvBytes);
 
         while (mRecvPacketRingBuffer.GetUseSize() > 0)

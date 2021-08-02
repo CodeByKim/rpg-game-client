@@ -6,20 +6,20 @@ public class NetworkService : MonoBehaviour
 {
     public static NetworkService Instance;
 
-    private Connector mConnector;
-    private IMessageHandler mHandler;
+    private Connector mConnector;    
+    private List<IMessageHandler> mHandlers;
     private Queue<NetPacket> mRecvPacketQueue;
     private Queue<NetPacket> mDispatchPacketQueue;
     private Object mLock;
 
     public void RegisterMessageHandler(IMessageHandler handler)
     {
-        mHandler = handler;
+        mHandlers.Add(handler);
         RegisterCallback();
     }
 
     public void Connect()
-    {
+    {        
         mConnector.Connect();
     }
 
@@ -32,14 +32,16 @@ public class NetworkService : MonoBehaviour
     {
         Instance = this;
 
-        mConnector = new Connector("127.0.0.1", 6000);        
-    }
-
-    private void Start()
-    {
+        mConnector = new Connector("127.0.0.1", 6000);
+        mHandlers = new List<IMessageHandler>();
         mRecvPacketQueue = new Queue<NetPacket>();
         mDispatchPacketQueue = new Queue<NetPacket>();
         mLock = new Object();
+    }
+
+    private void Start()
+    {        
+        
     }
 
     private void Update()
@@ -59,7 +61,25 @@ public class NetworkService : MonoBehaviour
         while (mDispatchPacketQueue.Count != 0)
         {
             NetPacket packet = mDispatchPacketQueue.Dequeue();
-            mHandler.OnPacketReceive(packet);
+
+            switch(packet.Type)
+            {
+                case NetPacket.PacketType.Connect:
+                    foreach (var handler in mHandlers)
+                        handler.OnConnect();
+
+                    break;
+
+                case NetPacket.PacketType.Disconnect:
+                    break;
+
+                case NetPacket.PacketType.Receive:
+                    foreach (var handler in mHandlers)
+                        handler.OnPacketReceive(packet);
+
+                    break;
+            }
+
             NetPacket.Free(packet);
         }
     }
@@ -67,8 +87,14 @@ public class NetworkService : MonoBehaviour
     private void RegisterCallback()
     {
         mConnector.RegisterOnConnect(() =>
-        {
-            mHandler.OnConnect();            
+        {            
+            NetPacket packet = NetPacket.Alloc(null);
+            packet.Type = NetPacket.PacketType.Connect;
+
+            lock (mLock)
+            {
+                mRecvPacketQueue.Enqueue(packet);
+            }
         });
 
         mConnector.RegisterOnReceive((NetPacket packet) =>

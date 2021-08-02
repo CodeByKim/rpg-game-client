@@ -49,7 +49,7 @@ public class Player : MonoBehaviour
             mIsMoving = true;
 
             NetPacket packet = NetPacket.Alloc();
-            short protocol = PROTOCOL.CS_PLAYER_MOVE_START;
+            short protocol = Protocol.PACKET_CS_PLAYER_MOVE_START;
             packet.Push(protocol).Push(transform.position.x).Push(transform.position.z);
 
             NetworkService.Instance.SendPacket(packet);
@@ -69,7 +69,7 @@ public class Player : MonoBehaviour
             mIsMoving = false;
 
             NetPacket packet = NetPacket.Alloc();
-            short protocol = PROTOCOL.CS_PLAYER_MOVE_END;
+            short protocol = Protocol.PACKET_CS_PLAYER_MOVE_END;
             packet.Push(protocol).Push(transform.position.x).Push(transform.position.z);
 
             NetworkService.Instance.SendPacket(packet);
