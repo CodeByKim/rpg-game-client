@@ -17,6 +17,14 @@ public class Player : MonoBehaviour
     private MoveDirection mCurrentDirection;
     private bool mIsMoving;
 
+    private int mID;    
+
+    public void Initialize(int id, int x, int z)
+    {
+        mID = id;
+        transform.position = new Vector3(x, 0, z);
+    }
+
     void Start()
     {
         mCurrentDirection = MoveDirection.Up;
@@ -25,7 +33,11 @@ public class Player : MonoBehaviour
     
     void Update()
     {
-        ProcessInput();
+        if(GameFramework.Instance.IsMy(mID))
+        {
+            ProcessInput();
+        }
+        
         Move();
     }
 

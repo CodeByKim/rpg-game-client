@@ -4,6 +4,7 @@ using UnityEngine;
 
 public interface IMessageHandler
 {
+    void OnInit(GameFramework game);
     void OnConnect();
     void OnDisconnect();
     void OnPacketReceive(NetPacket packet);

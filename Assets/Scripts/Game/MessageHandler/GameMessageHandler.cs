@@ -5,7 +5,12 @@ using UnityEngine;
 
 public class GameMessageHandler : MonoBehaviour, IMessageHandler
 {
-    public Player player;
+    private GameFramework mGame;
+
+    public void OnInit(GameFramework game)
+    {
+        mGame = game;
+    }
 
     public void OnConnect()
     {
@@ -46,11 +51,10 @@ public class GameMessageHandler : MonoBehaviour, IMessageHandler
 
             case Protocol.PACKET_SC_PLAYER_MOVE_END:
                 SC_PLAYER_MOVE_END(packet);
-                break;
-
+                break; 
         }
     }
-
+     
     private void Update()
     {
         
@@ -60,7 +64,12 @@ public class GameMessageHandler : MonoBehaviour, IMessageHandler
 
     private void SC_CREATE_MY_PLAYER(NetPacket packet)
     {
-
+        short id;
+        int x;
+        int z;
+        packet.Pop(out id).Pop(out x).Pop(out z);
+        
+        mGame.MyCreatePlayer(id, x, z);
     }
 
     private void SC_CREATE_OTHER_PLAYER(NetPacket packet)
@@ -85,13 +94,7 @@ public class GameMessageHandler : MonoBehaviour, IMessageHandler
 
     private void SC_PLAYER_MOVE_END(NetPacket packet)
     {
-        float x;
-        float z;
-
-        packet.Pop(out x).Pop(out z);
-
-        Debug.Log(string.Format("server x : {0}, local x : {1}", x, player.transform.position.x));
+        
     }
-
     #endregion
 }
