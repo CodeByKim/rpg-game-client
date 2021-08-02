@@ -164,10 +164,7 @@ public class Connector
         int recvBytes = e.BytesTransferred;        
 
         if(recvBytes == 0)
-        {
-            //TODO : 서버와의 통신에서 끊어짐            
-            //나중에 Disconnect 이벤트 연결해야 함
-
+        {            
             Close();
             mOnDisconnectComplete();
 

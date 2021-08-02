@@ -73,6 +73,7 @@ public class NetworkService : MonoBehaviour
                 case NetPacket.PacketType.Disconnect:
                     foreach (var handler in mHandlers)
                         handler.OnDisconnect();
+
                     break;
 
                 case NetPacket.PacketType.Receive:
