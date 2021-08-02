@@ -71,6 +71,8 @@ public class NetworkService : MonoBehaviour
                     break;
 
                 case NetPacket.PacketType.Disconnect:
+                    foreach (var handler in mHandlers)
+                        handler.OnDisconnect();
                     break;
 
                 case NetPacket.PacketType.Receive:
@@ -90,6 +92,17 @@ public class NetworkService : MonoBehaviour
         {            
             NetPacket packet = NetPacket.Alloc(null);
             packet.Type = NetPacket.PacketType.Connect;
+
+            lock (mLock)
+            {
+                mRecvPacketQueue.Enqueue(packet);
+            }
+        });
+
+        mConnector.RegisterOnDisconnect(() =>
+        {
+            NetPacket packet = NetPacket.Alloc(null);
+            packet.Type = NetPacket.PacketType.Disconnect;
 
             lock (mLock)
             {

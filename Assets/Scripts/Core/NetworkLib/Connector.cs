@@ -18,6 +18,7 @@ public class Connector
     private RingBuffer mRecvPacketRingBuffer;
 
     private Action mOnConnectComplete;
+    private Action mOnDisconnectComplete;
     private Action<NetPacket> mOnReceiveComplete;    
 
     private Queue<NetPacket> mSendPacketQueue;
@@ -52,6 +53,11 @@ public class Connector
     public void RegisterOnConnect(Action onComplete)
     {
         mOnConnectComplete = onComplete;
+    }
+
+    public void RegisterOnDisconnect(Action onComplete)
+    {
+        mOnDisconnectComplete = onComplete;
     }
 
     public void RegisterOnReceive(Action<NetPacket> onComplete)
@@ -161,6 +167,11 @@ public class Connector
         {
             //TODO : 서버와의 통신에서 끊어짐            
             //나중에 Disconnect 이벤트 연결해야 함
+
+            Close();
+            mOnDisconnectComplete();
+
+            return;
         }
 
         mRecvPacketRingBuffer.Enqueue(mRecvBuffer, recvBytes);
