@@ -19,7 +19,7 @@ public class Player : MonoBehaviour
 
     private int mID;    
 
-    public void Initialize(int id, int x, int z)
+    public void Initialize(int id, float x, float z)
     {
         mID = id;
         transform.position = new Vector3(x, 0, z);
@@ -33,10 +33,10 @@ public class Player : MonoBehaviour
     
     void Update()
     {
-        if(GameFramework.Instance.IsMy(mID))
-        {
-            ProcessInput();
-        }
+        //if(GameFramework.Instance.IsMy(mID))
+        //{
+        //    ProcessInput();
+        //}
         
         Move();
     }

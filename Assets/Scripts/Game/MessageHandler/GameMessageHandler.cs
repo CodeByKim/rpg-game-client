@@ -4,12 +4,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GameMessageHandler : MonoBehaviour, IMessageHandler
-{
-    private GameFramework mGame;
+{    
+    private GameFramework mGameFramework;
+    private RPGGameLogic mLogic;
 
     public void OnInit(GameFramework game)
     {
-        mGame = game;
+        mGameFramework = game;
+        mLogic = mGameFramework.GetGameLogic();
     }
 
     public void OnConnect()
@@ -30,27 +32,27 @@ public class GameMessageHandler : MonoBehaviour, IMessageHandler
         switch (protocol)
         {
             case Protocol.PACKET_SC_CREATE_MY_PLAYER:
-                SC_CREATE_MY_PLAYER(packet);
+                PacketCreateMyPlayer(packet);
                 break;
 
             case Protocol.PACKET_SC_CREATE_OTHER_PLAYER:
-                SC_CREATE_OTHER_PLAYER(packet);
+                PacketCreateOtherPlayer(packet);
                 break;
 
             case Protocol.PACKET_SC_DELETE_MY_PLAYER:
-                SC_DELETE_MY_PLAYER(packet);
+                PacketDeleteMyPlayer(packet);
                 break;
 
             case Protocol.PACKET_SC_DELETE_OTHER_PLAYER:
-                SC_DELETE_OTHER_PLAYER(packet);
+                PacketDeleteOtherPlayer(packet);
                 break;
 
-            case Protocol.PACKET_SC_PLAYER_MOVE_START:
-                SC_PLAYER_MOVE_START(packet);
+            case Protocol.PACKET_SC_PLAYER_MOVE_START:                
+                PacketPlayerMoveStart(packet);
                 break;
 
-            case Protocol.PACKET_SC_PLAYER_MOVE_END:
-                SC_PLAYER_MOVE_END(packet);
+            case Protocol.PACKET_SC_PLAYER_MOVE_END:                
+                PacketPlayerMoveEnd(packet);
                 break; 
         }
     }
@@ -61,38 +63,41 @@ public class GameMessageHandler : MonoBehaviour, IMessageHandler
     }
 
     #region Packet Func
-
-    private void SC_CREATE_MY_PLAYER(NetPacket packet)
+    private void PacketCreateMyPlayer(NetPacket packet)
     {
         short id;
-        int x;
-        int z;
+        float x;
+        float z;
         packet.Pop(out id).Pop(out x).Pop(out z);
-        
-        mGame.MyCreatePlayer(id, x, z);
+
+        Debug.Log(x);
+        Debug.Log(z);
+
+        mGameFramework.ID = id;
+        mLogic.MyCreatePlayer(id, x, z);
     }
 
-    private void SC_CREATE_OTHER_PLAYER(NetPacket packet)
+    private void PacketCreateOtherPlayer(NetPacket packet)
     {
 
     }
 
-    private void SC_DELETE_MY_PLAYER(NetPacket packet)
+    private void PacketDeleteMyPlayer(NetPacket packet)
     {
 
     }
 
-    private void SC_DELETE_OTHER_PLAYER(NetPacket packet)
+    private void PacketDeleteOtherPlayer(NetPacket packet)
     {
 
     }
 
-    private void SC_PLAYER_MOVE_START(NetPacket packet)
+    private void PacketPlayerMoveStart(NetPacket packet)
     {
 
     }
 
-    private void SC_PLAYER_MOVE_END(NetPacket packet)
+    private void PacketPlayerMoveEnd(NetPacket packet)
     {
         
     }

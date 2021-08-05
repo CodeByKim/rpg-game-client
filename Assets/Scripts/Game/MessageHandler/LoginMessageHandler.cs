@@ -14,7 +14,7 @@ public class LoginMessageHandler : MonoBehaviour, IMessageHandler
 
     public void OnConnect()
     {        
-        SceneManager.LoadScene("Game");
+        //SceneManager.LoadScene("Game");
     }
 
     public void OnDisconnect()
@@ -24,8 +24,8 @@ public class LoginMessageHandler : MonoBehaviour, IMessageHandler
 
     public void OnPacketReceive(NetPacket packet)
     {
-        short protocol;
-        packet.Pop(out protocol);
+        //short protocol;
+        //packet.Pop(out protocol);
     }
 
     private void Update()

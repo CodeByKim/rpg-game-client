@@ -279,7 +279,7 @@ public class NetPacket
             value = default(float);
             return null;
         }
-
+        //TODO 오류발생지점
         value = BitConverter.ToSingle(mBuffer, mBufferFrontIndex);
         mBufferFrontIndex += sizeof(float);
         mSize -= sizeof(float);
