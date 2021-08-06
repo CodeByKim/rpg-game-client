@@ -68,7 +68,7 @@ public class GameMessageHandler : MonoBehaviour, IMessageHandler
         float z;
         packet.Pop(out id).Pop(out dir).Pop(out x).Pop(out z);
 
-        mGameFramework.ID = id;
+        GameFramework.MyID = id;
         mLogic.CreateMyPlayer(id, dir, x, z);
     }
 
@@ -94,13 +94,25 @@ public class GameMessageHandler : MonoBehaviour, IMessageHandler
     }
 
     private void PacketPlayerMoveStart(NetPacket packet)
-    {
+    {        
+        int id;
+        byte dir;
+        float x;
+        float z;
+        packet.Pop(out id).Pop(out dir).Pop(out x).Pop(out z);
 
+        mLogic.OtherPlayerMoveStart(id, dir, x, z);
     }
 
     private void PacketPlayerMoveEnd(NetPacket packet)
     {
-        
+        int id;
+        byte dir;
+        float x;
+        float z;
+        packet.Pop(out id).Pop(out dir).Pop(out x).Pop(out z);
+
+        mLogic.OtherPlayerMoveEnd(id, dir, x, z);
     }
     #endregion
 }

@@ -8,8 +8,8 @@ public class GameFramework : MonoBehaviour
     [Header("Game Logic")]
     [SerializeField] private RPGGameLogic logic;
 
-    public int ID { get; set; }    
-
+    public static int MyID;
+    
     private void Awake()
     {        
         DontDestroyOnLoad(gameObject);
@@ -31,9 +31,9 @@ public class GameFramework : MonoBehaviour
         return logic;
     }
 
-    public bool IsMy(int id)
+    public static bool IsMy(int id)
     {
-        return ID == id;
+        return MyID == id;
     }
 
     private void RegisterMessageHandler()

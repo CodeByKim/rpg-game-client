@@ -32,4 +32,37 @@ public class RPGGameLogic : MonoBehaviour
         player.Initialize(id, dir, x, z);
         mPlayers.Add(id, player);
     }
+
+    public void OtherPlayerMoveStart(int id, byte dir, float x, float z)
+    {
+        Player player = GetPlayer(id);
+        if(player == null)
+        {
+            return;
+        }
+
+        player.MoveStart(dir, x, z);
+    }
+
+    public void OtherPlayerMoveEnd(int id, byte dir, float x, float z)
+    {
+        Player player = GetPlayer(id);
+        if (player == null)
+        {
+            return;
+        }
+
+        player.MoveEnd(dir, x, z);
+    }
+
+    private Player GetPlayer(int id)
+    {
+        Player player;
+        if(mPlayers.TryGetValue(id, out player))
+        {
+            return player;
+        }
+
+        return null;
+    }
 }
