@@ -19,17 +19,17 @@ public class RPGGameLogic : MonoBehaviour
         
     }
 
-    public void MyCreatePlayer(short id, float x, float z)
+    public void CreateMyPlayer(int id, byte dir, float x, float z)
     {        
         Player player = Instantiate(playerPrefab).GetComponent<Player>();
-        player.Initialize(id, x, z);
-        mPlayers.Add(id, player);        
+        player.Initialize(id, dir, x, z);
+        mPlayers.Add(id, player);
     }
 
-    public void OtherCreatePlayer(short id, int x, int z)
+    public void CreateOtherPlayer(int id, byte dir, float x, float z)
     {
-        //Player player = Instantiate(playerPrefab).GetComponent<Player>();
-        //player.Initialize(id, x, z);
-        //mPlayers.Add(id, player);
+        Player player = Instantiate(playerPrefab).GetComponent<Player>();
+        player.Initialize(id, dir, x, z);
+        mPlayers.Add(id, player);
     }
 }

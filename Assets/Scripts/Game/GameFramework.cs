@@ -18,6 +18,7 @@ public class GameFramework : MonoBehaviour
     void Start()
     {        
         RegisterMessageHandler();
+        Debug.Log("Start Game");
     }
     
     void Update()

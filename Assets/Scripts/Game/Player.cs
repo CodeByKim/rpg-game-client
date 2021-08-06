@@ -19,9 +19,10 @@ public class Player : MonoBehaviour
 
     private int mID;    
 
-    public void Initialize(int id, float x, float z)
+    public void Initialize(int id, byte dir, float x, float z)
     {
         mID = id;
+        SetDirection(dir);
         transform.position = new Vector3(x, 0, z);
     }
 
@@ -39,6 +40,28 @@ public class Player : MonoBehaviour
         //}
         
         Move();
+    }
+
+    private void SetDirection(byte dir)
+    {
+        switch(dir)
+        {
+            case 0:
+                mCurrentDirection = MoveDirection.Left;
+                break;
+
+            case 1:
+                mCurrentDirection = MoveDirection.Up;
+                break;
+
+            case 2:
+                mCurrentDirection = MoveDirection.Right;
+                break;
+
+            case 3:
+                mCurrentDirection = MoveDirection.Down;
+                break;
+        }
     }
 
     private void ProcessInput()
