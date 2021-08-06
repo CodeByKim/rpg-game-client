@@ -24,11 +24,8 @@ public class GameMessageHandler : MonoBehaviour, IMessageHandler
         
     }
     
-    public void OnPacketReceive(NetPacket packet)
-    {
-        short protocol;
-        packet.Pop(out protocol);
-
+    public void OnPacketReceive(short protocol, NetPacket packet)
+    {        
         switch (protocol)
         {
             case Protocol.PACKET_SC_CREATE_MY_PLAYER:

@@ -14,6 +14,7 @@ public class LoginMessageHandler : MonoBehaviour, IMessageHandler
 
     public void OnConnect()
     {        
+        //TODO : Scene 넘어가고 RequestCreatePlayer 패킷을 던져서 Player ID를 받는걸로 하자.
         //SceneManager.LoadScene("Game");
     }
 
@@ -22,10 +23,9 @@ public class LoginMessageHandler : MonoBehaviour, IMessageHandler
         
     }
 
-    public void OnPacketReceive(NetPacket packet)
+    public void OnPacketReceive(short protocol, NetPacket packet)
     {
-        //short protocol;
-        //packet.Pop(out protocol);
+        
     }
 
     private void Update()

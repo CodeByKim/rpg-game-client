@@ -77,8 +77,11 @@ public class NetworkService : MonoBehaviour
                     break;
 
                 case NetPacket.PacketType.Receive:
+                    short protocol;
+                    packet.Pop(out protocol);
+
                     foreach (var handler in mHandlers)
-                        handler.OnPacketReceive(packet);
+                        handler.OnPacketReceive(protocol, packet);
 
                     break;
             }
