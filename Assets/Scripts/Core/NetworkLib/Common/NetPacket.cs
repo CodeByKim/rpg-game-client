@@ -73,6 +73,8 @@ public class NetPacket
 
     public static void Free(NetPacket packet)
     {
+        UnityEngine.Debug.Log("Free Packet");
+
         if(packet.mPacketType == PacketType.Send)
         {
             mSendPacketAllocator.Push(packet);

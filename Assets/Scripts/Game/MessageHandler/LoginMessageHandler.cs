@@ -13,9 +13,21 @@ public class LoginMessageHandler : MonoBehaviour, IMessageHandler
     }
 
     public void OnConnect()
+    {
+        SceneManager.activeSceneChanged += OnSceneChanged;
+        SceneManager.LoadScene("Game");        
+    }
+
+    private void OnSceneChanged(Scene prevScene, Scene changedScene)
     {        
-        //TODO : Scene 넘어가고 RequestCreatePlayer 패킷을 던져서 Player ID를 받는걸로 하자.
-        //SceneManager.LoadScene("Game");
+        if(changedScene.name == "Game")
+        {
+            NetPacket packet = NetPacket.Alloc();
+            short protocol = Protocol.PACKET_CS_CREATE_MY_PLAYER;
+            packet.Push(protocol);
+
+            NetworkService.Instance.SendPacket(packet);
+        }
     }
 
     public void OnDisconnect()
