@@ -74,7 +74,7 @@ public class Player : MonoBehaviour
     {
         if(!mIsKeyPress)
         {
-            if (Input.GetKeyDown(KeyCode.A))
+            if (Input.GetKey(KeyCode.A))
             {
                 mCurrentDirection = MoveDirection.Left;
                 mIsMoving = true;
@@ -83,7 +83,7 @@ public class Player : MonoBehaviour
                 SendMoveStart(0);
             }
 
-            if (Input.GetKeyDown(KeyCode.W))
+            if (Input.GetKey(KeyCode.W))
             {
                 mCurrentDirection = MoveDirection.Up;
                 mIsMoving = true;
@@ -92,7 +92,7 @@ public class Player : MonoBehaviour
                 SendMoveStart(1);
             }
 
-            if (Input.GetKeyDown(KeyCode.D))
+            if (Input.GetKey(KeyCode.D))
             {
                 mCurrentDirection = MoveDirection.Right;
                 mIsMoving = true;
@@ -101,7 +101,7 @@ public class Player : MonoBehaviour
                 SendMoveStart(2);
             }
 
-            if (Input.GetKeyDown(KeyCode.S))
+            if (Input.GetKey(KeyCode.S))
             {
                 mCurrentDirection = MoveDirection.Down;
                 mIsMoving = true;
