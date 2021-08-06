@@ -41,7 +41,7 @@ public class RPGGameLogic : MonoBehaviour
             return;
         }
 
-        player.MoveStart(dir, x, z);
+        player.RemoteMoveStart(dir, x, z);
     }
 
     public void OtherPlayerMoveEnd(int id, byte dir, float x, float z)
@@ -52,7 +52,7 @@ public class RPGGameLogic : MonoBehaviour
             return;
         }
 
-        player.MoveEnd(dir, x, z);
+        player.RemoteMoveEnd(dir, x, z);
     }
 
     private Player GetPlayer(int id)
