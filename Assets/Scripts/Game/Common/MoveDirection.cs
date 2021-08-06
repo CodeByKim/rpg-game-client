@@ -25,7 +25,7 @@ public struct MoveDirection
         switch(mDirection)
         {
             case MOVE_LEFT:
-                return Vector3.left;
+                return Vector3.left;                
 
             case MOVE_UP:
                 return Vector3.forward;

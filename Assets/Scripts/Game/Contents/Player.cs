@@ -7,6 +7,38 @@ public class Player : MonoBehaviour
 {    
     public float speed;
 
+
+    public MoveDirection ChrrentDirection
+    {
+        get
+        {
+            return mCurrentDirection;
+        }
+        set
+        {
+            mCurrentDirection = value;
+
+            switch(mCurrentDirection.GetValue())
+            {
+                case MoveDirection.MOVE_LEFT:
+                    transform.eulerAngles = new Vector3(0, -90, 0);
+                    break;
+
+                case MoveDirection.MOVE_UP:
+                    transform.eulerAngles = new Vector3(0, 0, 0);
+                    break;
+
+                case MoveDirection.MOVE_RIGHT:
+                    transform.eulerAngles = new Vector3(0, 90, 0);
+                    break;
+
+                case MoveDirection.MOVE_DOWN:
+                    transform.eulerAngles = new Vector3(0, 180, 0);
+                    break;
+            }
+        }
+    }
+
     private MoveDirection mCurrentDirection;
     private bool mIsMoving;
     private int mID;
@@ -17,7 +49,7 @@ public class Player : MonoBehaviour
     {
         mID = id;
         mIsKeyPress = false;
-        mCurrentDirection = new MoveDirection(dir);
+        ChrrentDirection = new MoveDirection(dir);
         transform.position = new Vector3(x, 0, z);
     }
     
@@ -25,11 +57,11 @@ public class Player : MonoBehaviour
     {
         if(!mIsKeyPress)
         {
-            mCurrentDirection = direction;
+            ChrrentDirection = direction;
             mIsMoving = true;
             mIsKeyPress = true;
 
-            SendMoveStart(mCurrentDirection.GetValue());
+            SendMoveStart(ChrrentDirection.GetValue());
         }        
     }
 
@@ -38,7 +70,7 @@ public class Player : MonoBehaviour
         string message = string.Format("[이동 시작] 위치 차이 : X({0}), Z({1})", transform.position.x - x, transform.position.z - z);
         Debug.Log(message);
 
-        mCurrentDirection = new MoveDirection(dir);
+        ChrrentDirection = new MoveDirection(dir);
         mIsMoving = true;
     }
 
@@ -47,13 +79,13 @@ public class Player : MonoBehaviour
         string message = string.Format("[이동 종료] 위치 차이 : X({0}), Z({1})", transform.position.x - x, transform.position.z - z);
         Debug.Log(message);
 
-        mCurrentDirection = new MoveDirection(dir);
+        ChrrentDirection = new MoveDirection(dir);
         mIsMoving = false;
     }
 
     void Start()
     {
-        mCurrentDirection = MoveDirection.Down();
+        ChrrentDirection = MoveDirection.Down();
         mIsMoving = false;
         mInputButtons = new List<InputButton>();
 
@@ -90,7 +122,7 @@ public class Player : MonoBehaviour
 
             NetPacket packet = NetPacket.Alloc();
             short protocol = Protocol.PACKET_CS_PLAYER_MOVE_END;                       
-            packet.Push(protocol).Push(mCurrentDirection.GetValue()).Push(transform.position.x).Push(transform.position.z);
+            packet.Push(protocol).Push(ChrrentDirection.GetValue()).Push(transform.position.x).Push(transform.position.z);
 
             NetworkService.Instance.SendPacket(packet);
         }
@@ -100,8 +132,8 @@ public class Player : MonoBehaviour
     {
         if (mIsMoving)
         {
-            Vector3 moveDir = mCurrentDirection.ToVector();
-            transform.Translate(moveDir * Time.deltaTime * speed);
+            Vector3 moveDir = ChrrentDirection.ToVector();
+            transform.Translate(moveDir * Time.deltaTime * speed, Space.World);
         }
     }
 
