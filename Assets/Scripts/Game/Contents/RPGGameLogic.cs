@@ -33,6 +33,20 @@ public class RPGGameLogic : MonoBehaviour
         mPlayers.Add(id, player);
     }
 
+    public void DeleteOtherPlayer(int id)
+    {
+        Player player = GetPlayer(id);
+        if(player == null)
+        {
+            Debug.LogError("player is null");
+            return;
+        }
+
+        mPlayers.Remove(id);
+        Destroy(player.gameObject);
+
+    }
+
     public void OtherPlayerMoveStart(int id, byte dir, float x, float z)
     {
         Player player = GetPlayer(id);

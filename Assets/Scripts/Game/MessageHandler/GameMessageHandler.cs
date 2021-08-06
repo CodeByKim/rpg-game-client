@@ -36,10 +36,6 @@ public class GameMessageHandler : MonoBehaviour, IMessageHandler
                 PacketCreateOtherPlayer(packet);
                 break;
 
-            case Protocol.PACKET_SC_DELETE_MY_PLAYER:
-                PacketDeleteMyPlayer(packet);
-                break;
-
             case Protocol.PACKET_SC_DELETE_OTHER_PLAYER:
                 PacketDeleteOtherPlayer(packet);
                 break;
@@ -83,14 +79,12 @@ public class GameMessageHandler : MonoBehaviour, IMessageHandler
         mLogic.CreateOtherPlayer(id, dir, x, z);
     }
 
-    private void PacketDeleteMyPlayer(NetPacket packet)
-    {
-
-    }
-
     private void PacketDeleteOtherPlayer(NetPacket packet)
     {
+        int id;
+        packet.Pop(out id);
 
+        mLogic.DeleteOtherPlayer(id);
     }
 
     private void PacketPlayerMoveStart(NetPacket packet)
