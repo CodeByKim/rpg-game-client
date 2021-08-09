@@ -7,8 +7,7 @@ public class Player : MonoBehaviour
 {    
     public float speed;
 
-
-    public MoveDirection ChrrentDirection
+    public MoveDirection CurrentDirection
     {
         get
         {
@@ -20,7 +19,7 @@ public class Player : MonoBehaviour
 
             switch(mCurrentDirection.GetValue())
             {
-                case MoveDirection.MOVE_LEFT:
+                case MoveDirection.MOVE_LEFT:                    
                     transform.eulerAngles = new Vector3(0, -90, 0);
                     break;
 
@@ -49,19 +48,20 @@ public class Player : MonoBehaviour
     {
         mID = id;
         mIsKeyPress = false;
-        ChrrentDirection = new MoveDirection(dir);
-        transform.position = new Vector3(x, 0, z);
+        
+        CurrentDirection = new MoveDirection(dir);
+        transform.position = new Vector3(x, 0, z);        
     }
     
     public void OnPressMoveButton(MoveDirection direction)
     {
         if(!mIsKeyPress)
         {
-            ChrrentDirection = direction;
+            CurrentDirection = direction;
             mIsMoving = true;
             mIsKeyPress = true;
 
-            SendMoveStart(ChrrentDirection.GetValue());
+            SendMoveStart(CurrentDirection.GetValue());
         }        
     }
 
@@ -70,7 +70,7 @@ public class Player : MonoBehaviour
         string message = string.Format("[이동 시작] 위치 차이 : X({0}), Z({1})", transform.position.x - x, transform.position.z - z);
         Debug.Log(message);
 
-        ChrrentDirection = new MoveDirection(dir);
+        CurrentDirection = new MoveDirection(dir);
         mIsMoving = true;
     }
 
@@ -79,13 +79,13 @@ public class Player : MonoBehaviour
         string message = string.Format("[이동 종료] 위치 차이 : X({0}), Z({1})", transform.position.x - x, transform.position.z - z);
         Debug.Log(message);
 
-        ChrrentDirection = new MoveDirection(dir);
+        CurrentDirection = new MoveDirection(dir);
         mIsMoving = false;
     }
 
     void Start()
     {
-        ChrrentDirection = MoveDirection.Down();
+        //CurrentDirection = MoveDirection.Down();
         mIsMoving = false;
         mInputButtons = new List<InputButton>();
 
@@ -134,7 +134,7 @@ public class Player : MonoBehaviour
 
             NetPacket packet = NetPacket.Alloc();
             short protocol = Protocol.PACKET_CS_PLAYER_MOVE_END;                       
-            packet.Push(protocol).Push(ChrrentDirection.GetValue()).Push(transform.position.x).Push(transform.position.z);
+            packet.Push(protocol).Push(CurrentDirection.GetValue()).Push(transform.position.x).Push(transform.position.z);
 
             NetworkService.Instance.SendPacket(packet);
         }
@@ -144,7 +144,7 @@ public class Player : MonoBehaviour
     {
         if (mIsMoving)
         {
-            Vector3 moveDir = ChrrentDirection.ToVector();
+            Vector3 moveDir = CurrentDirection.ToVector();
             transform.Translate(moveDir * Time.deltaTime * speed, Space.World);
         }
     }

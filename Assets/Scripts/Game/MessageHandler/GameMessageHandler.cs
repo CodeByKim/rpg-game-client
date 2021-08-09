@@ -63,7 +63,7 @@ public class GameMessageHandler : MonoBehaviour, IMessageHandler
         float x;
         float z;
         packet.Pop(out id).Pop(out dir).Pop(out x).Pop(out z);
-
+        
         GameFramework.MyID = id;
         mLogic.CreateMyPlayer(id, dir, x, z);
     }
