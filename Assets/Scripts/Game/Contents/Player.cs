@@ -84,9 +84,7 @@ public class Player : MonoBehaviour
     }
 
     void Start()
-    {
-        //CurrentDirection = MoveDirection.Down();
-        mIsMoving = false;
+    {        
         mInputButtons = new List<InputButton>();
 
         mInputButtons.Add(new LeftMoveButton(this));
@@ -101,7 +99,7 @@ public class Player : MonoBehaviour
         {
             ProcessInput();
         }
-        
+
         Move();
     }
 
