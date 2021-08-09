@@ -94,7 +94,7 @@ public class Player : MonoBehaviour
         mInputButtons.Add(new RightMoveButton(this));
         mInputButtons.Add(new DownMoveButton(this));
     }
-    
+
     void Update()
     {        
         if(GameFramework.IsMy(mID))
@@ -103,6 +103,18 @@ public class Player : MonoBehaviour
         }
         
         Move();
+    }
+
+    private void LateUpdate()
+    {
+        if (GameFramework.IsMy(mID))
+        {
+            Transform cameraTransform = Camera.main.transform;
+            
+            cameraTransform.localPosition = new Vector3(transform.position.x,
+                                                        cameraTransform.localPosition.y,
+                                                        transform.position.z);
+        }            
     }
 
     private void ProcessInput()

@@ -82,8 +82,7 @@ public class GameMessageHandler : MonoBehaviour, IMessageHandler
     private void PacketDeleteOtherPlayer(NetPacket packet)
     {
         int id;
-        packet.Pop(out id);
-
+        packet.Pop(out id);        
         mLogic.DeleteOtherPlayer(id);
     }
 
