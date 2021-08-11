@@ -44,7 +44,6 @@ public class RPGGameLogic : MonoBehaviour
 
         mPlayers.Remove(id);
         Destroy(player.gameObject);
-
     }
 
     public void OtherPlayerMoveStart(int id, byte dir, float x, float z)
