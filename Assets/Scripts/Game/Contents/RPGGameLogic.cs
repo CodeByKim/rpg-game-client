@@ -38,7 +38,7 @@ public class RPGGameLogic : MonoBehaviour
         Player player = GetPlayer(id);
         if(player == null)
         {
-            Debug.LogError("player is null");
+            Debug.LogError("player is null, ID : " + id);
             return;
         }
 
