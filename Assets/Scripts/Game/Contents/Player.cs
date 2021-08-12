@@ -139,8 +139,20 @@ public class Player : MonoBehaviour
         if (mIsMoving)
         {
             Vector3 moveDir = CurrentDirection.ToVector();
-            transform.position += moveDir * Time.deltaTime * speed;
-            //transform.Translate(moveDir * Time.deltaTime * speed, Space.World);
+            Vector3 offset = moveDir * Time.deltaTime * speed;
+            Vector3 result = transform.position + offset;
+
+            if(result.x < 0 || result.x > 500 || result.z < 0 || result.z > 500)
+            {
+                /*
+                 * STOP 패킷을 보내려고 했는데 Update에서 계속 패킷을 보내는 문제 발생
+                 * 그냥 벽에 걸리는 로직으로 감
+                 */
+                
+                return;
+            }
+
+            transform.position = result;
         }
     }
 
