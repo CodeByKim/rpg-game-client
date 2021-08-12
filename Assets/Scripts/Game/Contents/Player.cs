@@ -139,7 +139,8 @@ public class Player : MonoBehaviour
         if (mIsMoving)
         {
             Vector3 moveDir = CurrentDirection.ToVector();
-            transform.Translate(moveDir * Time.deltaTime * speed, Space.World);
+            transform.position += moveDir * Time.deltaTime * speed;
+            //transform.Translate(moveDir * Time.deltaTime * speed, Space.World);
         }
     }
 

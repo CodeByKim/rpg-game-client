@@ -40,11 +40,11 @@ public class GameMessageHandler : MonoBehaviour, IMessageHandler
                 PacketDeleteOtherPlayer(packet);
                 break;
 
-            case Protocol.PACKET_SC_PLAYER_MOVE_START:                
+            case Protocol.PACKET_SC_PLAYER_MOVE_START:
                 PacketPlayerMoveStart(packet);
                 break;
 
-            case Protocol.PACKET_SC_PLAYER_MOVE_END:                
+            case Protocol.PACKET_SC_PLAYER_MOVE_END:
                 PacketPlayerMoveEnd(packet);
                 break; 
         }
