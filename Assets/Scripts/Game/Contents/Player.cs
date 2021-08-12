@@ -40,26 +40,23 @@ public class Player : MonoBehaviour
 
     private MoveDirection mCurrentDirection;
     private bool mIsMoving;
-    private int mID;
-    private bool mIsKeyPress;
+    private int mID;    
     private List<InputButton> mInputButtons;
 
     public void Initialize(int id, byte dir, float x, float z)
     {
         mID = id;
-        mIsKeyPress = false;
-        
+        mIsMoving = false;
         CurrentDirection = new MoveDirection(dir);
         transform.position = new Vector3(x, 0, z);        
     }
     
     public void OnPressMoveButton(MoveDirection direction)
     {
-        if(!mIsKeyPress)
+        if(!mIsMoving)
         {
             CurrentDirection = direction;
-            mIsMoving = true;
-            mIsKeyPress = true;
+            mIsMoving = true;            
 
             SendMoveStart(CurrentDirection.GetValue());
         }        
@@ -127,8 +124,7 @@ public class Player : MonoBehaviour
             Input.GetKeyUp(KeyCode.D) ||
             Input.GetKeyUp(KeyCode.S))
         {
-            mIsMoving = false;
-            mIsKeyPress = false;
+            mIsMoving = false;            
 
             NetPacket packet = NetPacket.Alloc();
             short protocol = Protocol.PACKET_CS_PLAYER_MOVE_END;                       

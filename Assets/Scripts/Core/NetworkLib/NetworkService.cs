@@ -25,7 +25,7 @@ public class NetworkService : MonoBehaviour
 
     public void SendPacket(NetPacket packet)
     {
-        mConnector.SendPacket(packet);
+        mConnector.SendPacket(packet);        
     }
 
     private void Awake()
