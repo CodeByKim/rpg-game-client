@@ -46,7 +46,11 @@ public class GameMessageHandler : MonoBehaviour, IMessageHandler
 
             case Protocol.PACKET_SC_PLAYER_MOVE_END:
                 PacketPlayerMoveEnd(packet);
-                break; 
+                break;
+
+            case Protocol.PACKET_SC_SYNC_POSITION:
+                PacketSyncPosition(packet);
+                break;            
         }
     }
      
@@ -107,5 +111,16 @@ public class GameMessageHandler : MonoBehaviour, IMessageHandler
 
         mLogic.OtherPlayerMoveEnd(id, dir, x, z);
     }
+
+    private void PacketSyncPosition(NetPacket packet)
+    {
+        int id;
+        byte dir;
+        float x;
+        float z;
+        packet.Pop(out id).Pop(out dir).Pop(out x).Pop(out z);
+        
+        mLogic.SetPlayerSync(id, dir, x, z);
+    }    
     #endregion
 }

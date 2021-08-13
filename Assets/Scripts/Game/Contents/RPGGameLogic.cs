@@ -7,7 +7,14 @@ public class RPGGameLogic : MonoBehaviour
     [Header("Prefabs")]
     [SerializeField] private GameObject playerPrefab;
 
+    public static RPGGameLogic Instance;
+
     private Dictionary<int, Player> mPlayers;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     void Start()
     {
@@ -17,6 +24,20 @@ public class RPGGameLogic : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void Teleport(float x, float z)
+    {
+        Player player = GetPlayer(GameFramework.MyID);
+
+        NetPacket packet = NetPacket.Alloc();
+        short protocol = Protocol.PACKET_CS_TELEPORT_PLAYER;
+        byte dir = player.CurrentDirection.GetValue();
+
+        packet.Push(protocol).Push(dir).Push(x).Push(z);        
+        NetworkService.Instance.SendPacket(packet);     
+        
+        player.transform.position = new Vector3(x, 0, z);
     }
 
     public void CreateMyPlayer(int id, byte dir, float x, float z)
@@ -66,6 +87,17 @@ public class RPGGameLogic : MonoBehaviour
         }
 
         player.RemoteMoveEnd(dir, x, z);
+    }
+
+    public void SetPlayerSync(int id, byte dir, float x, float z)
+    {
+        Player player = GetPlayer(id);
+        if (player == null)
+        {
+            return;
+        }
+
+        player.SyncPosition(dir, x, z);
     }
 
     private Player GetPlayer(int id)

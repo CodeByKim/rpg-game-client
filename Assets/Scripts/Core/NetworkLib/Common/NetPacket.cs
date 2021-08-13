@@ -96,7 +96,7 @@ public class NetPacket
     public void PutData(byte[] data)
     {
         int size = data.Length;
-
+        
         if (mSize + size > 1024 - PacketHeader.GetHeaderSize())
         {            
             UnityEngine.Debug.Log("PacketException : PutData");
@@ -158,29 +158,27 @@ public class NetPacket
         mSize = buffer.Length;
     }
 
-    
-
     #region Push Data
     public NetPacket Push(byte value)
-    {
-        PutData(BitConverter.GetBytes(value));
+    {        
+        PutData(new byte[] { value });
         return this;
     }
 
     public NetPacket Push(bool value)
-    {
+    {        
         PutData(BitConverter.GetBytes(value));
         return this;
     }
 
     public NetPacket Push(char value)
-    {
+    {        
         PutData(BitConverter.GetBytes(value));
         return this;
     }
 
     public NetPacket Push(short value)
-    {
+    {        
         PutData(BitConverter.GetBytes(value));
         return this;
     }

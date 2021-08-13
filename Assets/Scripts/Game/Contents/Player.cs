@@ -48,7 +48,7 @@ public class Player : MonoBehaviour
         mID = id;
         mIsMoving = false;
         CurrentDirection = new MoveDirection(dir);
-        transform.position = new Vector3(x, 0, z);        
+        transform.position = new Vector3(x, 0, z); 
     }
     
     public void OnPressMoveButton(MoveDirection direction)
@@ -78,6 +78,12 @@ public class Player : MonoBehaviour
 
         CurrentDirection = new MoveDirection(dir);
         mIsMoving = false;
+    }
+
+    public void SyncPosition(byte dir, float x, float z)
+    {
+        CurrentDirection = new MoveDirection(dir);
+        transform.position = new Vector3(x, 0, z);
     }
 
     void Start()
@@ -161,7 +167,7 @@ public class Player : MonoBehaviour
         NetPacket packet = NetPacket.Alloc();
         short protocol = Protocol.PACKET_CS_PLAYER_MOVE_START;
         packet.Push(protocol).Push(dir).Push(transform.position.x).Push(transform.position.z);
-
+        
         NetworkService.Instance.SendPacket(packet);
     }
 }

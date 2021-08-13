@@ -11,4 +11,8 @@ public static class Protocol
     public const short PACKET_CS_PLAYER_MOVE_END = 5;
     public const short PACKET_SC_PLAYER_MOVE_START = 6;
     public const short PACKET_SC_PLAYER_MOVE_END = 7;
+
+    public const short PACKET_SC_SYNC_POSITION = 99;
+    public const short PACKET_CS_CUSTOM_CREATE_MY_PLAYER = 100;
+    public const short PACKET_CS_TELEPORT_PLAYER = 101;
 }
