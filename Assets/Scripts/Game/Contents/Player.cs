@@ -142,7 +142,7 @@ public class Player : MonoBehaviour
             Vector3 offset = moveDir * Time.deltaTime * speed;
             Vector3 result = transform.position + offset;
 
-            if(result.x < 0 || result.x > 500 || result.z < 0 || result.z > 500)
+            if(result.x < 0 || result.x > 2000 || result.z < 0 || result.z > 2000)
             {
                 /*
                  * STOP 패킷을 보내려고 했는데 Update에서 계속 패킷을 보내는 문제 발생
