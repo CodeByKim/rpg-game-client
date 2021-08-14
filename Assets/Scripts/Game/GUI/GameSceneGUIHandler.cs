@@ -12,7 +12,7 @@ public class GameSceneGUIHandler : MonoBehaviour
     }
 
     public void OnTeleportButtonClick()
-    {        
+    {
         mLogic.Teleport(5, 5);
     }
 }

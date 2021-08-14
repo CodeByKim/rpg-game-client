@@ -4,9 +4,16 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class LoginSceneGUIHandler : MonoBehaviour
-{    
-    public void OnConnectButtonClick()
+{
+    private LoginSceneLogic mLogic;
+
+    private void Start()
     {
-        NetworkService.Instance.Connect();
+        mLogic = GameFramework.GetGameLogic<LoginSceneLogic>();
+    }
+
+    public void OnConnectButtonClick()
+    {        
+        mLogic.RequestConnect();
     }
 }
