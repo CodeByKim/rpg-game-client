@@ -4,14 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GameMessageHandler : MonoBehaviour, IMessageHandler
-{    
-    private GameFramework mGameFramework;
+{        
     private RPGGameLogic mLogic;
 
-    public void OnInit(GameFramework game)
-    {
-        mGameFramework = game;
-        mLogic = mGameFramework.GetGameLogic();
+    public void OnInit()
+    {        
+        mLogic = GameFramework.GetGameLogic<RPGGameLogic>();
     }
 
     public void OnConnect()

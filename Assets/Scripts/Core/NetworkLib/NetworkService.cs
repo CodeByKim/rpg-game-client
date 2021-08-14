@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class NetworkService : MonoBehaviour
 {
-    public static NetworkService Instance;
+    public static NetworkService Instance;    
 
     private Connector mConnector;    
     private List<IMessageHandler> mHandlers;
@@ -13,7 +13,7 @@ public class NetworkService : MonoBehaviour
     private Object mLock;
 
     public void RegisterMessageHandler(IMessageHandler handler)
-    {
+    {        
         mHandlers.Add(handler);
         RegisterCallback();
     }
@@ -28,10 +28,8 @@ public class NetworkService : MonoBehaviour
         mConnector.SendPacket(packet);        
     }
 
-    private void Awake()
-    {
-        Instance = this;
-
+    public void Initialize()
+    {        
         mConnector = new Connector("127.0.0.1", 6000);
         mHandlers = new List<IMessageHandler>();
         mRecvPacketQueue = new Queue<NetPacket>();
@@ -39,6 +37,11 @@ public class NetworkService : MonoBehaviour
         mLock = new Object();
     }
 
+    private void Awake()
+    {
+        Instance = this;
+
+    }
     private void Start()
     {        
         

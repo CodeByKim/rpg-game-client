@@ -2,19 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RPGGameLogic : MonoBehaviour
+public abstract class GameLogic : MonoBehaviour
+{
+    public abstract string GetName();
+}
+
+public class RPGGameLogic : GameLogic
 {
     [Header("Prefabs")]
     [SerializeField] private GameObject playerPrefab;
 
-    public static RPGGameLogic Instance;
-
     private Dictionary<int, Player> mPlayers;
-
-    private void Awake()
-    {
-        Instance = this;
-    }
 
     void Start()
     {
@@ -29,15 +27,11 @@ public class RPGGameLogic : MonoBehaviour
     public void Teleport(float x, float z)
     {
         Player player = GetPlayer(GameFramework.MyID);
-
-        NetPacket packet = NetPacket.Alloc();
-        short protocol = Protocol.PACKET_CS_TELEPORT_PLAYER;
-        byte dir = player.CurrentDirection.GetValue();
-
-        packet.Push(protocol).Push(dir).Push(x).Push(z);        
-        NetworkService.Instance.SendPacket(packet);     
-        
         player.transform.position = new Vector3(x, 0, z);
+
+        Protocol.SEND_TELEPORT_PLAYER(player.CurrentDirection.GetValue(), 
+                                      x, 
+                                      z);
     }
 
     public void CreateMyPlayer(int id, byte dir, float x, float z)
@@ -98,6 +92,11 @@ public class RPGGameLogic : MonoBehaviour
         }
 
         player.SyncPosition(dir, x, z);
+    }
+
+    public override string GetName()
+    {
+        return "RPGGameLogic";
     }
 
     private Player GetPlayer(int id)

@@ -5,11 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class LoginMessageHandler : MonoBehaviour, IMessageHandler
 {
-    private GameFramework mGame;
-
-    public void OnInit(GameFramework game)
+    public void OnInit()
     {
-        mGame = game;
+        
     }
 
     public void OnConnect()
@@ -18,15 +16,12 @@ public class LoginMessageHandler : MonoBehaviour, IMessageHandler
         SceneManager.LoadScene("Game");        
     }
 
+    //TODO : 이 부분도 좀 처리하고 싶다..
     private void OnSceneChanged(Scene prevScene, Scene changedScene)
     {        
         if(changedScene.name == "Game")
         {
-            NetPacket packet = NetPacket.Alloc();
-            short protocol = Protocol.PACKET_CS_CREATE_MY_PLAYER;
-            packet.Push(protocol);
-
-            NetworkService.Instance.SendPacket(packet);
+            Protocol.SEND_CREATE_MY_PLAYER();
         }
     }
 

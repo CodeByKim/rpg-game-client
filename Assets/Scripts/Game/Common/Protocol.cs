@@ -12,7 +12,42 @@ public static class Protocol
     public const short PACKET_SC_PLAYER_MOVE_START = 6;
     public const short PACKET_SC_PLAYER_MOVE_END = 7;
 
-    public const short PACKET_SC_SYNC_POSITION = 99;
-    public const short PACKET_CS_CUSTOM_CREATE_MY_PLAYER = 100;
-    public const short PACKET_CS_TELEPORT_PLAYER = 101;
+    public const short PACKET_SC_SYNC_POSITION = 99;    
+    public const short PACKET_CS_TELEPORT_PLAYER = 100;
+
+    public static void SEND_CREATE_MY_PLAYER()
+    {
+        NetPacket packet = NetPacket.Alloc();
+        short protocol = PACKET_CS_CREATE_MY_PLAYER;
+        packet.Push(protocol);
+
+        NetworkService.Instance.SendPacket(packet);
+    }
+
+    public static void SEND_PLAYER_MOVE_START(byte dir, float x, float z)
+    {
+        NetPacket packet = NetPacket.Alloc();
+        short protocol = PACKET_CS_PLAYER_MOVE_START;
+        packet.Push(protocol).Push(dir).Push(x).Push(z);
+
+        NetworkService.Instance.SendPacket(packet);
+    }
+
+    public static void SEND_PLAYER_MOVE_END(byte dir, float x, float z)
+    {
+        NetPacket packet = NetPacket.Alloc();
+        short protocol = PACKET_CS_PLAYER_MOVE_END;
+        packet.Push(protocol).Push(dir).Push(x).Push(z);
+
+        NetworkService.Instance.SendPacket(packet);
+    }
+
+    public static void SEND_TELEPORT_PLAYER(byte dir, float x, float z)
+    {
+        NetPacket packet = NetPacket.Alloc();
+        short protocol = Protocol.PACKET_CS_TELEPORT_PLAYER;        
+        packet.Push(protocol).Push(dir).Push(x).Push(z);
+
+        NetworkService.Instance.SendPacket(packet);
+    }
 }

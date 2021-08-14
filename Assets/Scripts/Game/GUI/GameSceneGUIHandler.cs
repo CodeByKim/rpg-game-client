@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class GameSceneGUIHandler : MonoBehaviour
 {
-    public void OnTeleportButtonClick()
-    {
-        /*
-         * 1. 먼저 서버에 보내놓고
-         * 2. 나 한방에 텔레포트
-         */
+    private RPGGameLogic mLogic;
 
-        RPGGameLogic.Instance.Teleport(5, 5);
+    private void Start()
+    {
+        mLogic = GameFramework.GetGameLogic<RPGGameLogic>();
+    }
+
+    public void OnTeleportButtonClick()
+    {        
+        mLogic.Teleport(5, 5);
     }
 }

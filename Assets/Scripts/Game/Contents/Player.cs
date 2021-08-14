@@ -56,9 +56,11 @@ public class Player : MonoBehaviour
         if(!mIsMoving)
         {
             CurrentDirection = direction;
-            mIsMoving = true;            
+            mIsMoving = true;
 
-            SendMoveStart(CurrentDirection.GetValue());
+            Protocol.SEND_PLAYER_MOVE_START(CurrentDirection.GetValue(), 
+                                            transform.position.x, 
+                                            transform.position.z);            
         }        
     }
 
@@ -130,13 +132,11 @@ public class Player : MonoBehaviour
             Input.GetKeyUp(KeyCode.D) ||
             Input.GetKeyUp(KeyCode.S))
         {
-            mIsMoving = false;            
+            mIsMoving = false;
 
-            NetPacket packet = NetPacket.Alloc();
-            short protocol = Protocol.PACKET_CS_PLAYER_MOVE_END;                       
-            packet.Push(protocol).Push(CurrentDirection.GetValue()).Push(transform.position.x).Push(transform.position.z);
-
-            NetworkService.Instance.SendPacket(packet);
+            Protocol.SEND_PLAYER_MOVE_END(CurrentDirection.GetValue(), 
+                                          transform.position.x, 
+                                          transform.position.z);
         }
     }
 
@@ -160,14 +160,5 @@ public class Player : MonoBehaviour
 
             transform.position = result;
         }
-    }
-
-    private void SendMoveStart(byte dir)
-    {       
-        NetPacket packet = NetPacket.Alloc();
-        short protocol = Protocol.PACKET_CS_PLAYER_MOVE_START;
-        packet.Push(protocol).Push(dir).Push(transform.position.x).Push(transform.position.z);
-        
-        NetworkService.Instance.SendPacket(packet);
     }
 }
