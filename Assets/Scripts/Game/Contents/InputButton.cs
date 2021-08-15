@@ -22,7 +22,7 @@ public class LeftMoveButton : InputButton
 
     public override void Poll()
     {
-        if (Input.GetKey(KeyCode.A))
+        if (Input.GetKey(KeyCode.LeftArrow))
         {
             mPlayer.OnPressMoveButton(MoveDirection.Left());
         }
@@ -37,7 +37,7 @@ public class UpMoveButton : InputButton
 
     public override void Poll()
     {
-        if (Input.GetKey(KeyCode.W))
+        if (Input.GetKey(KeyCode.UpArrow))
         {
             mPlayer.OnPressMoveButton(MoveDirection.Up());
         }
@@ -52,7 +52,7 @@ public class RightMoveButton : InputButton
 
     public override void Poll()
     {
-        if (Input.GetKey(KeyCode.D))
+        if (Input.GetKey(KeyCode.RightArrow))
         {
             mPlayer.OnPressMoveButton(MoveDirection.Right());
         }
@@ -67,7 +67,7 @@ public class DownMoveButton : InputButton
 
     public override void Poll()
     {
-        if (Input.GetKey(KeyCode.S))
+        if (Input.GetKey(KeyCode.DownArrow))
         {
             mPlayer.OnPressMoveButton(MoveDirection.Down());
         }

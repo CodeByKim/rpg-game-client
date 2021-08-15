@@ -127,10 +127,15 @@ public class Player : MonoBehaviour
             button.Poll();
         }
 
-        if (Input.GetKeyUp(KeyCode.A) ||
-            Input.GetKeyUp(KeyCode.W) ||
-            Input.GetKeyUp(KeyCode.D) ||
-            Input.GetKeyUp(KeyCode.S))
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            Debug.Log("Attack");
+        }
+
+        if (Input.GetKeyUp(KeyCode.LeftArrow) ||
+            Input.GetKeyUp(KeyCode.UpArrow) ||
+            Input.GetKeyUp(KeyCode.RightArrow) ||
+            Input.GetKeyUp(KeyCode.DownArrow))
         {
             mIsMoving = false;
 
