@@ -46,6 +46,14 @@ public class GameMessageHandler : MonoBehaviour, IMessageHandler
                 PacketPlayerMoveEnd(packet);
                 break;
 
+            case Protocol.PACKET_SC_CREATE_MONSTER:
+                PacketCreateMonster(packet);
+                break;
+
+            case Protocol.PACKET_SC_REMOVE_MONSTER:
+                PacketRemoveMonster(packet);
+                break;
+
             case Protocol.PACKET_SC_SYNC_POSITION:
                 PacketSyncPosition(packet);
                 break;            
@@ -108,6 +116,25 @@ public class GameMessageHandler : MonoBehaviour, IMessageHandler
         packet.Pop(out id).Pop(out dir).Pop(out x).Pop(out z);
 
         mLogic.OtherPlayerMoveEnd(id, dir, x, z);
+    }
+
+    private void PacketCreateMonster(NetPacket packet)
+    {
+        int id;
+        byte dir;
+        float x;
+        float z;
+        packet.Pop(out id).Pop(out dir).Pop(out x).Pop(out z);
+
+        mLogic.CreateMonster(id, dir, x, z);
+    }
+
+    private void PacketRemoveMonster(NetPacket packet)
+    {
+        int id;        
+        packet.Pop(out id);
+
+        mLogic.RemoveMonster(id);
     }
 
     private void PacketSyncPosition(NetPacket packet)

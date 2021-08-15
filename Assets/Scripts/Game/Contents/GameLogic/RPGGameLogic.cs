@@ -11,12 +11,15 @@ public class RPGGameLogic : GameLogic
 {
     [Header("Prefabs")]
     [SerializeField] private GameObject playerPrefab;
+    [SerializeField] private GameObject monsterPrefab;
 
     private Dictionary<int, Player> mPlayers;
+    private Dictionary<int, Monster> mMonsters;
 
     void Start()
     {
         mPlayers = new Dictionary<int, Player>();
+        mMonsters = new Dictionary<int, Monster>();
     }
 
     void Update()
@@ -83,6 +86,26 @@ public class RPGGameLogic : GameLogic
         player.RemoteMoveEnd(dir, x, z);
     }
 
+    public void CreateMonster(int id, byte dir, float x, float z)
+    {
+        Monster monster = Instantiate(monsterPrefab).GetComponent<Monster>();
+        monster.Initialize(id, dir, x, z);
+        mMonsters.Add(id, monster);
+    }
+
+    public void RemoveMonster(int id)
+    {
+        Monster monster = GetMonster(id);
+        if (monster == null)
+        {
+            Debug.LogError("monster is null, ID : " + id);
+            return;
+        }
+
+        mMonsters.Remove(id);
+        Destroy(monster.gameObject);
+    }
+
     public void SetPlayerSync(int id, byte dir, float x, float z)
     {
         Player player = GetPlayer(id);
@@ -105,6 +128,17 @@ public class RPGGameLogic : GameLogic
         if(mPlayers.TryGetValue(id, out player))
         {
             return player;
+        }
+
+        return null;
+    }
+
+    private Monster GetMonster(int id)
+    {
+        Monster monster;
+        if (mMonsters.TryGetValue(id, out monster))
+        {
+            return monster;
         }
 
         return null;

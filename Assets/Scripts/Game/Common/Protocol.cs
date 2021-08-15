@@ -12,6 +12,9 @@ public static class Protocol
     public const short PACKET_SC_PLAYER_MOVE_START = 6;
     public const short PACKET_SC_PLAYER_MOVE_END = 7;
 
+    public const short PACKET_SC_CREATE_MONSTER = 8;
+    public const short PACKET_SC_REMOVE_MONSTER = 9;
+
     public const short PACKET_SC_SYNC_POSITION = 99;    
     public const short PACKET_CS_TELEPORT_PLAYER = 100;
 
