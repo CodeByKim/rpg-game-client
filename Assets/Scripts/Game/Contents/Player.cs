@@ -42,8 +42,7 @@ public class Player : MonoBehaviour
 
     private MoveDirection mCurrentDirection;
     private int mID;
-    private bool mIsMoving;
-    private bool mIsAttacking;
+    private bool mIsMoving;    
     private List<InputButton> mInputButtons;
 
     public void Initialize(int id, byte dir, float x, float z)
@@ -134,8 +133,7 @@ public class Player : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.Space))
         {
-            mIsAttacking = true;
-            mAnimation.CrossFade("PlayerAttack");
+            Attack();   
         }
 
         if (Input.GetKeyUp(KeyCode.LeftArrow) ||
@@ -151,6 +149,16 @@ public class Player : MonoBehaviour
         }
     }
     
+    private void Attack()
+    {
+        if (mAnimation.IsPlaying("PlayerAttack"))
+        {
+            return;
+        }
+        
+        mAnimation.CrossFade("PlayerAttack");
+    }
+
     private void Move()
     {
         if (mIsMoving)

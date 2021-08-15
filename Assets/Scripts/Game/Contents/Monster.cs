@@ -42,8 +42,7 @@ public class Monster : MonoBehaviour
 
     public void Initialize(int id, byte dir, float x, float z)
     {
-        mID = id;
-        //mIsMoving = false;
+        mID = id;        
         CurrentDirection = new MoveDirection(dir);
         transform.position = new Vector3(x, 0, z);
         mHP = 100;
