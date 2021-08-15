@@ -4,9 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour
-{
-    private Animation mAnimation;
-
+{    
     public float speed;
 
     public MoveDirection CurrentDirection
@@ -40,9 +38,13 @@ public class Player : MonoBehaviour
         }
     }
 
+    public bool IsAttacking => mAnimation.IsPlaying("PlayerAttack");
+    
+    private Animation mAnimation;
     private MoveDirection mCurrentDirection;
     private int mID;
-    private bool mIsMoving;    
+    private bool mIsMoving;
+    
     private List<InputButton> mInputButtons;
 
     public void Initialize(int id, byte dir, float x, float z)
@@ -55,6 +57,11 @@ public class Player : MonoBehaviour
     
     public void OnPressMoveButton(MoveDirection direction)
     {
+        if(IsAttacking)
+        {
+            return;
+        }
+
         if(!mIsMoving)
         {
             CurrentDirection = direction;
