@@ -166,7 +166,7 @@ public class Player : MonoBehaviour
     
     private void Attack()
     {
-        if (mAnimation.IsPlaying("PlayerAttack"))
+        if (IsAttacking || mIsMoving)
         {
             return;
         }
