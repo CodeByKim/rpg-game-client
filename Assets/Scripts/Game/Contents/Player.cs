@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour
-{    
+{
+    private Animation mAnimation;
+
     public float speed;
 
     public MoveDirection CurrentDirection
@@ -39,8 +41,9 @@ public class Player : MonoBehaviour
     }
 
     private MoveDirection mCurrentDirection;
+    private int mID;
     private bool mIsMoving;
-    private int mID;    
+    private bool mIsAttacking;
     private List<InputButton> mInputButtons;
 
     public void Initialize(int id, byte dir, float x, float z)
@@ -96,6 +99,8 @@ public class Player : MonoBehaviour
         mInputButtons.Add(new UpMoveButton(this));
         mInputButtons.Add(new RightMoveButton(this));
         mInputButtons.Add(new DownMoveButton(this));
+
+        mAnimation = GetComponent<Animation>();
     }
 
     void Update()
@@ -105,7 +110,7 @@ public class Player : MonoBehaviour
             ProcessInput();
         }
 
-        Move();
+        Move();        
     }
 
     private void LateUpdate()
@@ -129,7 +134,8 @@ public class Player : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.Space))
         {
-            Debug.Log("Attack");
+            mIsAttacking = true;
+            mAnimation.CrossFade("PlayerAttack");
         }
 
         if (Input.GetKeyUp(KeyCode.LeftArrow) ||
@@ -144,7 +150,7 @@ public class Player : MonoBehaviour
                                           transform.position.z);
         }
     }
-
+    
     private void Move()
     {
         if (mIsMoving)
