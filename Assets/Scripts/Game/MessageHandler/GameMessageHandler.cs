@@ -62,6 +62,10 @@ public class GameMessageHandler : MonoBehaviour, IMessageHandler
                 PacketHitMonster(packet);
                 break;
 
+            case Protocol.PACKET_SC_MONSTER_DEAD:
+                PacketDeadMonster(packet);
+                break;
+
             case Protocol.PACKET_SC_SYNC_POSITION:
                 PacketSyncPosition(packet);
                 break;            
@@ -163,6 +167,14 @@ public class GameMessageHandler : MonoBehaviour, IMessageHandler
         packet.Pop(out id).Pop(out hp);
 
         mLogic.HitMonster(id, hp);
+    }
+
+    private void PacketDeadMonster(NetPacket packet)
+    {
+        int id;        
+        packet.Pop(out id);
+
+        mLogic.DeadMonster(id);
     }
 
     private void PacketSyncPosition(NetPacket packet)

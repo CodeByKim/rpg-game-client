@@ -55,6 +55,19 @@ public class Monster : MonoBehaviour
         mAnimation.CrossFade("MonsterHit");
     }
 
+    public void Dead()
+    {
+        StartCoroutine(DeadRoutine());
+    }
+
+    private IEnumerator DeadRoutine()
+    {
+        mAnimation.CrossFade("MonsterDead");
+        yield return new WaitForSeconds(1);
+
+        Destroy(gameObject);
+    }
+
     void Start()
     {
         mAnimation = GetComponent<Animation>();
