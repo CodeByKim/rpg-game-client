@@ -86,6 +86,17 @@ public class RPGGameLogic : GameLogic
         player.RemoteMoveEnd(dir, x, z);
     }
 
+    public void OtherPlayerAttack(int id, byte dir, float x, float z)
+    {
+        Player player = GetPlayer(id);
+        if (player == null)
+        {
+            return;
+        }
+
+        player.RemoteAttack(dir, x, z);
+    }
+
     public void CreateMonster(int id, byte dir, float x, float z)
     {
         Monster monster = Instantiate(monsterPrefab).GetComponent<Monster>();

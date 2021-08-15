@@ -46,6 +46,10 @@ public class GameMessageHandler : MonoBehaviour, IMessageHandler
                 PacketPlayerMoveEnd(packet);
                 break;
 
+            case Protocol.PACKET_SC_PLAYER_ATTACK:
+                PacketPlayerAttack(packet);
+                break;
+
             case Protocol.PACKET_SC_CREATE_MONSTER:
                 PacketCreateMonster(packet);
                 break;
@@ -116,6 +120,17 @@ public class GameMessageHandler : MonoBehaviour, IMessageHandler
         packet.Pop(out id).Pop(out dir).Pop(out x).Pop(out z);
 
         mLogic.OtherPlayerMoveEnd(id, dir, x, z);
+    }
+
+    private void PacketPlayerAttack(NetPacket packet)
+    {
+        int id;
+        byte dir;
+        float x;
+        float z;
+        packet.Pop(out id).Pop(out dir).Pop(out x).Pop(out z);
+
+        mLogic.OtherPlayerAttack(id, dir, x, z);
     }
 
     private void PacketCreateMonster(NetPacket packet)

@@ -84,6 +84,14 @@ public class Player : MonoBehaviour
         mIsMoving = false;
     }
 
+    public void RemoteAttack(byte dir, float x, float z)
+    {
+        CurrentDirection = new MoveDirection(dir);
+        transform.position = new Vector3(x, 0, z);
+
+        mAnimation.CrossFade("PlayerAttack");
+    }
+
     public void SyncPosition(byte dir, float x, float z)
     {
         CurrentDirection = new MoveDirection(dir);
@@ -155,7 +163,11 @@ public class Player : MonoBehaviour
         {
             return;
         }
-        
+
+        Protocol.SEND_PLAYER_ATTACK(CurrentDirection.GetValue(), 
+                                    transform.position.x, 
+                                    transform.position.z);
+
         mAnimation.CrossFade("PlayerAttack");
     }
 
