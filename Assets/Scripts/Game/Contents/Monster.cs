@@ -8,6 +8,7 @@ public class Monster : MonoBehaviour
     private int mHP;
 
     private MoveDirection mCurrentDirection;
+    private Animation mAnimation;
 
     public MoveDirection CurrentDirection
     {
@@ -48,9 +49,15 @@ public class Monster : MonoBehaviour
         mHP = 100;
     }
 
+    public void Hit(int hp)
+    {
+        mHP = hp;
+        mAnimation.CrossFade("MonsterHit");
+    }
+
     void Start()
     {
-        
+        mAnimation = GetComponent<Animation>();
     }
     
     void Update()

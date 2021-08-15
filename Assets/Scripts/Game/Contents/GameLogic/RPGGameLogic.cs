@@ -117,6 +117,18 @@ public class RPGGameLogic : GameLogic
         Destroy(monster.gameObject);
     }
 
+    public void HitMonster(int id, int hp)
+    {
+        Monster monster = GetMonster(id);
+        if (monster == null)
+        {
+            Debug.LogError("monster is null, ID : " + id);
+            return;
+        }
+
+        monster.Hit(hp);
+    }
+
     public void SetPlayerSync(int id, byte dir, float x, float z)
     {
         Player player = GetPlayer(id);
