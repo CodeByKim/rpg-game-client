@@ -89,8 +89,8 @@ public class Player : MonoBehaviour
 
     public void RemoteMoveStart(byte dir, float x, float z)
     {
-        string message = string.Format("[이동 시작] 위치 차이 : X({0}), Z({1})", transform.position.x - x, transform.position.z - z);
-        Debug.Log(message);
+        //string message = string.Format("[이동 시작] 위치 차이 : X({0}), Z({1})", transform.position.x - x, transform.position.z - z);
+        //Debug.Log(message);
 
         CurrentDirection = new MoveDirection(dir);
         mIsMoving = true;
@@ -98,8 +98,8 @@ public class Player : MonoBehaviour
 
     public void RemoteMoveEnd(byte dir, float x, float z)
     {
-        string message = string.Format("[이동 종료] 위치 차이 : X({0}), Z({1})", transform.position.x - x, transform.position.z - z);
-        Debug.Log(message);
+        //string message = string.Format("[이동 종료] 위치 차이 : X({0}), Z({1})", transform.position.x - x, transform.position.z - z);
+        //Debug.Log(message);
 
         CurrentDirection = new MoveDirection(dir);
         mIsMoving = false;
@@ -113,9 +113,9 @@ public class Player : MonoBehaviour
         mAnimation.CrossFade("PlayerAttack");
     }
 
-    public void SyncPosition(byte dir, float x, float z)
+    public void SyncPosition(float x, float z)    
     {
-        CurrentDirection = new MoveDirection(dir);
+        //CurrentDirection = new MoveDirection(dir);
         transform.position = new Vector3(x, 0, z);
     }
 

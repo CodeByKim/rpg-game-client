@@ -142,7 +142,7 @@ public class RPGGameLogic : GameLogic
         monster.Dead();
     }
 
-    public void SetPlayerSync(int id, byte dir, float x, float z)
+    public void SetPlayerSync(int id, float x, float z)    
     {
         Player player = GetPlayer(id);
         if (player == null)
@@ -150,7 +150,8 @@ public class RPGGameLogic : GameLogic
             return;
         }
 
-        player.SyncPosition(dir, x, z);
+        player.SyncPosition(x, z);
+        Debug.LogError("SYNC_POSITION : " + id);
     }
 
     public override string GetName()

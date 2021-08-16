@@ -179,13 +179,12 @@ public class GameMessageHandler : MonoBehaviour, IMessageHandler
 
     private void PacketSyncPosition(NetPacket packet)
     {
-        int id;
-        byte dir;
+        int id;        
         float x;
         float z;
-        packet.Pop(out id).Pop(out dir).Pop(out x).Pop(out z);
+        packet.Pop(out id).Pop(out x).Pop(out z);
         
-        mLogic.SetPlayerSync(id, dir, x, z);
+        mLogic.SetPlayerSync(id, x, z);
     }    
     #endregion
 }
