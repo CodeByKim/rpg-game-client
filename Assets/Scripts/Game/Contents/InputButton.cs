@@ -74,3 +74,18 @@ public class DownMoveButton : InputButton
     }
 }
 
+public class AttackButton : InputButton
+{
+    public AttackButton(Player player) : base(player)
+    {
+    }
+
+    public override void Poll()
+    {
+        if (Input.GetKey(KeyCode.Space))
+        {            
+            mPlayer.OnPressAttackButton();
+        }
+    }
+}
+

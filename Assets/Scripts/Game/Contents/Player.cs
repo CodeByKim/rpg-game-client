@@ -73,6 +73,20 @@ public class Player : MonoBehaviour
         }        
     }
 
+    public void OnPressAttackButton()
+    {
+        if (IsAttacking || mIsMoving)
+        {
+            return;
+        }
+
+        Protocol.SEND_PLAYER_ATTACK(CurrentDirection.GetValue(),
+                                    transform.position.x,
+                                    transform.position.z);
+
+        mAnimation.CrossFade("PlayerAttack");
+    }
+
     public void RemoteMoveStart(byte dir, float x, float z)
     {
         string message = string.Format("[이동 시작] 위치 차이 : X({0}), Z({1})", transform.position.x - x, transform.position.z - z);
@@ -113,6 +127,7 @@ public class Player : MonoBehaviour
         mInputButtons.Add(new UpMoveButton(this));
         mInputButtons.Add(new RightMoveButton(this));
         mInputButtons.Add(new DownMoveButton(this));
+        mInputButtons.Add(new AttackButton(this));
 
         mAnimation = GetComponent<Animation>();
     }
@@ -146,11 +161,6 @@ public class Player : MonoBehaviour
             button.Poll();
         }
 
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            Attack();   
-        }
-
         if (Input.GetKeyUp(KeyCode.LeftArrow) ||
             Input.GetKeyUp(KeyCode.UpArrow) ||
             Input.GetKeyUp(KeyCode.RightArrow) ||
@@ -164,20 +174,6 @@ public class Player : MonoBehaviour
         }
     }
     
-    private void Attack()
-    {
-        if (IsAttacking || mIsMoving)
-        {
-            return;
-        }
-
-        Protocol.SEND_PLAYER_ATTACK(CurrentDirection.GetValue(), 
-                                    transform.position.x, 
-                                    transform.position.z);
-
-        mAnimation.CrossFade("PlayerAttack");
-    }
-
     private void Move()
     {
         if (mIsMoving)
@@ -191,8 +187,7 @@ public class Player : MonoBehaviour
                 /*
                  * STOP 패킷을 보내려고 했는데 Update에서 계속 패킷을 보내는 문제 발생
                  * 그냥 벽에 걸리는 로직으로 감
-                 */
-                
+                 */                
                 return;
             }
 
