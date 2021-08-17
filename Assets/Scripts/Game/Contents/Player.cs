@@ -69,7 +69,7 @@ public class Player : MonoBehaviour
 
             Protocol.SEND_PLAYER_MOVE_START(CurrentDirection.GetValue(), 
                                             transform.position.x, 
-                                            transform.position.z);            
+                                            transform.position.z);
         }        
     }
 
