@@ -151,7 +151,9 @@ public class RPGGameLogic : GameLogic
         }
 
         player.SyncPosition(x, z);
-        Debug.LogError("SYNC_POSITION : " + id);
+
+        if(id == GameFramework.MyID)
+            Debug.LogError("SYNC_POSITION");
     }
 
     public override string GetName()
