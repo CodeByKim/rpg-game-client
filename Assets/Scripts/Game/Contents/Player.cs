@@ -62,6 +62,32 @@ public class Player : MonoBehaviour
         }        
     }
     
+    private void PlayMoveAnimation(MoveDirection direction)
+    {
+        switch (direction.GetValue())
+        {
+            case MoveDirection.MOVE_LEFT:
+                mSprite.flipX = false;
+                mAnimator.SetTrigger("MoveLeft");
+                break;
+
+            case MoveDirection.MOVE_UP:
+                mSprite.flipX = false;
+                mAnimator.SetTrigger("MoveUp");
+                break;
+
+            case MoveDirection.MOVE_RIGHT:
+                mSprite.flipX = true;
+                mAnimator.SetTrigger("MoveLeft");
+                break;
+
+            case MoveDirection.MOVE_DOWN:
+                mSprite.flipX = false;
+                mAnimator.SetTrigger("MoveDown");
+                break;
+        }
+    }
+
     public void OnPressMoveButton(MoveDirection direction)
     {
         if(IsAttacking)
@@ -77,6 +103,8 @@ public class Player : MonoBehaviour
             Protocol.SEND_PLAYER_MOVE_START(CurrentDirection.GetValue(), 
                                             transform.position.x, 
                                             transform.position.z);
+
+            PlayMoveAnimation(CurrentDirection);
         }        
     }
 
@@ -90,8 +118,7 @@ public class Player : MonoBehaviour
         Protocol.SEND_PLAYER_ATTACK(CurrentDirection.GetValue(),
                                     transform.position.x,
                                     transform.position.z);
-
-        //mAnimation.CrossFade("PlayerAttack");
+        
         mAnimator.SetBool("IsAttack", true);
     }
 
@@ -111,8 +138,7 @@ public class Player : MonoBehaviour
     {
         CurrentDirection = new MoveDirection(dir);
         transform.position = new Vector3(x, 0, z);
-
-        //mAnimation.CrossFade("PlayerAttack");
+        
         mAnimator.SetBool("IsAttack", true);
     }
 
@@ -130,8 +156,7 @@ public class Player : MonoBehaviour
         mInputButtons.Add(new RightMoveButton(this));
         mInputButtons.Add(new DownMoveButton(this));
         mInputButtons.Add(new AttackButton(this));
-
-        //mAnimation = GetComponent<Animation>();
+        
         mAnimator = GetComponent<Animator>();
         mSprite = GetComponent<SpriteRenderer>();
     }

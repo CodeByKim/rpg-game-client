@@ -5,14 +5,10 @@ using UnityEngine;
 public abstract class InputButton
 {
     protected Player mPlayer;
-    protected Animator mAnimator;
-    protected SpriteRenderer mSprite;
 
     public InputButton(Player player)
     {
         mPlayer = player;
-        mAnimator = mPlayer.GetComponent<Animator>();
-        mSprite = mPlayer.GetComponent<SpriteRenderer>();
     }
 
     public abstract void Poll();
@@ -28,9 +24,6 @@ public class LeftMoveButton : InputButton
     {
         if (Input.GetKey(KeyCode.LeftArrow))
         {
-            mSprite.flipX = false;
-            mAnimator.SetTrigger("IsWalkLeft");
-
             mPlayer.OnPressMoveButton(MoveDirection.Left());
         }
     }
@@ -46,9 +39,6 @@ public class UpMoveButton : InputButton
     {
         if (Input.GetKey(KeyCode.UpArrow))
         {
-            mSprite.flipX = false;
-            mAnimator.SetTrigger("IsWalkUp");
-
             mPlayer.OnPressMoveButton(MoveDirection.Up());
         }
     }
@@ -64,9 +54,6 @@ public class RightMoveButton : InputButton
     {
         if (Input.GetKey(KeyCode.RightArrow))
         {
-            mSprite.flipX = true;
-            mAnimator.SetTrigger("IsWalkLeft");
-
             mPlayer.OnPressMoveButton(MoveDirection.Right());
         }
     }
@@ -82,9 +69,6 @@ public class DownMoveButton : InputButton
     {
         if (Input.GetKey(KeyCode.DownArrow))
         {
-            mSprite.flipX = false;
-            mAnimator.SetTrigger("IsWalkDown");
-
             mPlayer.OnPressMoveButton(MoveDirection.Down());
         }
     }
