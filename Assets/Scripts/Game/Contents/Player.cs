@@ -7,36 +7,7 @@ public class Player : MonoBehaviour
 {    
     public float speed;
 
-    public MoveDirection CurrentDirection
-    {
-        get
-        {
-            return mCurrentDirection;
-        }
-        set
-        {
-            mCurrentDirection = value;
-
-            //switch(mCurrentDirection.GetValue())
-            //{
-            //    case MoveDirection.MOVE_LEFT:                    
-            //        transform.eulerAngles = new Vector3(0, -90, 0);
-            //        break;
-
-            //    case MoveDirection.MOVE_UP:
-            //        transform.eulerAngles = new Vector3(0, 0, 0);
-            //        break;
-
-            //    case MoveDirection.MOVE_RIGHT:
-            //        transform.eulerAngles = new Vector3(0, 90, 0);
-            //        break;
-
-            //    case MoveDirection.MOVE_DOWN:
-            //        transform.eulerAngles = new Vector3(0, 180, 0);
-            //        break;
-            //}
-        }
-    }
+    public MoveDirection CurrentDirection { get; set; }    
     
     public bool IsAttacking => mAnimator.GetBool("IsAttack");
     
@@ -59,35 +30,12 @@ public class Player : MonoBehaviour
         if(GameFramework.IsMy(mID))
         {
             CameraController.Instance.SetTarget(transform);
-        }        
+        }
+
+        mAnimator = GetComponent<Animator>();
+        mSprite = GetComponent<SpriteRenderer>();
     }
     
-    private void PlayMoveAnimation(MoveDirection direction)
-    {
-        switch (direction.GetValue())
-        {
-            case MoveDirection.MOVE_LEFT:
-                mSprite.flipX = false;
-                mAnimator.SetTrigger("MoveLeft");
-                break;
-
-            case MoveDirection.MOVE_UP:
-                mSprite.flipX = false;
-                mAnimator.SetTrigger("MoveUp");
-                break;
-
-            case MoveDirection.MOVE_RIGHT:
-                mSprite.flipX = true;
-                mAnimator.SetTrigger("MoveLeft");
-                break;
-
-            case MoveDirection.MOVE_DOWN:
-                mSprite.flipX = false;
-                mAnimator.SetTrigger("MoveDown");
-                break;
-        }
-    }
-
     public void OnPressMoveButton(MoveDirection direction)
     {
         if(IsAttacking)
@@ -125,6 +73,7 @@ public class Player : MonoBehaviour
     public void RemoteMoveStart(byte dir, float x, float z)
     {    
         CurrentDirection = new MoveDirection(dir);
+        PlayMoveAnimation(CurrentDirection);
         mIsMoving = true;
     }
 
@@ -209,6 +158,32 @@ public class Player : MonoBehaviour
             }
 
             transform.position = result;
+        }
+    }
+
+    private void PlayMoveAnimation(MoveDirection direction)
+    {
+        switch (direction.GetValue())
+        {
+            case MoveDirection.MOVE_LEFT:
+                mSprite.flipX = false;
+                mAnimator.SetTrigger("MoveLeft");
+                break;
+
+            case MoveDirection.MOVE_UP:
+                mSprite.flipX = false;
+                mAnimator.SetTrigger("MoveUp");
+                break;
+
+            case MoveDirection.MOVE_RIGHT:
+                mSprite.flipX = true;
+                mAnimator.SetTrigger("MoveLeft");
+                break;
+
+            case MoveDirection.MOVE_DOWN:
+                mSprite.flipX = false;
+                mAnimator.SetTrigger("MoveDown");
+                break;
         }
     }
 
