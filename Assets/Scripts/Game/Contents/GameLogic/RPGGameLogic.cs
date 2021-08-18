@@ -41,6 +41,7 @@ public class RPGGameLogic : GameLogic
     {        
         Player player = Instantiate(playerPrefab).GetComponent<Player>();
         player.Initialize(id, dir, x, z);
+        player.name = "MyPlayer";
         mPlayers.Add(id, player);
     }
 

@@ -17,30 +17,32 @@ public class Player : MonoBehaviour
         {
             mCurrentDirection = value;
 
-            switch(mCurrentDirection.GetValue())
-            {
-                case MoveDirection.MOVE_LEFT:                    
-                    transform.eulerAngles = new Vector3(0, -90, 0);
-                    break;
+            //switch(mCurrentDirection.GetValue())
+            //{
+            //    case MoveDirection.MOVE_LEFT:                    
+            //        transform.eulerAngles = new Vector3(0, -90, 0);
+            //        break;
 
-                case MoveDirection.MOVE_UP:
-                    transform.eulerAngles = new Vector3(0, 0, 0);
-                    break;
+            //    case MoveDirection.MOVE_UP:
+            //        transform.eulerAngles = new Vector3(0, 0, 0);
+            //        break;
 
-                case MoveDirection.MOVE_RIGHT:
-                    transform.eulerAngles = new Vector3(0, 90, 0);
-                    break;
+            //    case MoveDirection.MOVE_RIGHT:
+            //        transform.eulerAngles = new Vector3(0, 90, 0);
+            //        break;
 
-                case MoveDirection.MOVE_DOWN:
-                    transform.eulerAngles = new Vector3(0, 180, 0);
-                    break;
-            }
+            //    case MoveDirection.MOVE_DOWN:
+            //        transform.eulerAngles = new Vector3(0, 180, 0);
+            //        break;
+            //}
         }
     }
-
-    public bool IsAttacking => mAnimation.IsPlaying("PlayerAttack");
     
-    private Animation mAnimation;
+    public bool IsAttacking => mAnimator.GetBool("IsAttack");
+    
+    private Animator mAnimator;
+    private SpriteRenderer mSprite;
+
     private MoveDirection mCurrentDirection;
     private int mID;
     private bool mIsMoving;
@@ -52,7 +54,12 @@ public class Player : MonoBehaviour
         mID = id;
         mIsMoving = false;
         CurrentDirection = new MoveDirection(dir);
-        transform.position = new Vector3(x, 0, z); 
+        transform.position = new Vector3(x, 0, z);
+
+        if(GameFramework.IsMy(mID))
+        {
+            CameraController.Instance.SetTarget(transform);
+        }        
     }
     
     public void OnPressMoveButton(MoveDirection direction)
@@ -84,7 +91,8 @@ public class Player : MonoBehaviour
                                     transform.position.x,
                                     transform.position.z);
 
-        mAnimation.CrossFade("PlayerAttack");
+        //mAnimation.CrossFade("PlayerAttack");
+        mAnimator.SetBool("IsAttack", true);
     }
 
     public void RemoteMoveStart(byte dir, float x, float z)
@@ -104,7 +112,8 @@ public class Player : MonoBehaviour
         CurrentDirection = new MoveDirection(dir);
         transform.position = new Vector3(x, 0, z);
 
-        mAnimation.CrossFade("PlayerAttack");
+        //mAnimation.CrossFade("PlayerAttack");
+        mAnimator.SetBool("IsAttack", true);
     }
 
     public void SyncPosition(float x, float z)    
@@ -122,7 +131,9 @@ public class Player : MonoBehaviour
         mInputButtons.Add(new DownMoveButton(this));
         mInputButtons.Add(new AttackButton(this));
 
-        mAnimation = GetComponent<Animation>();
+        //mAnimation = GetComponent<Animation>();
+        mAnimator = GetComponent<Animator>();
+        mSprite = GetComponent<SpriteRenderer>();
     }
 
     void Update()
@@ -133,18 +144,6 @@ public class Player : MonoBehaviour
         }
 
         Move();        
-    }
-
-    private void LateUpdate()
-    {
-        if (GameFramework.IsMy(mID))
-        {
-            Transform cameraTransform = Camera.main.transform;
-            
-            cameraTransform.localPosition = new Vector3(transform.position.x,
-                                                        cameraTransform.localPosition.y,
-                                                        transform.position.z);
-        }            
     }
 
     private void ProcessInput()
@@ -186,5 +185,10 @@ public class Player : MonoBehaviour
 
             transform.position = result;
         }
+    }
+
+    public void AttackStop()
+    {        
+        mAnimator.SetBool("IsAttack", false);
     }
 }
