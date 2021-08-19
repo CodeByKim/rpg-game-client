@@ -24,34 +24,20 @@ public class RPGGameLogic : GameLogic
         mMonsters = new Dictionary<int, Monster>();
     }
 
-    void Update()
-    {
-        
-    }
-
-    //public void Teleport(float x, float z)
-    //{
-    //    Player player = GetPlayer(GameFramework.MyID);
-    //    player.transform.position = new Vector3(x, 0, z);
-
-    //    Protocol.SEND_TELEPORT_PLAYER(player.CurrentDirection.GetValue(), 
-    //                                  x, 
-    //                                  z);
-    //}
-
-    public void CreateMyPlayer(int id, byte dir, float x, float z)
+    public void CreateMyPlayer(int id, byte dir, float x, float z, bool isMy)
     {        
         Player player = Instantiate(playerPrefab).GetComponent<Player>();
         player.Initialize(id, dir, x, z);
-        player.name = "MyPlayer";
 
-        mPlayers.Add(id, player);
-    }
+        if(isMy)
+        {
+            player.name = "MyPlayer";
+        }
+        else
+        {
+            player.name = "RemotePlayer";
+        }
 
-    public void CreateOtherPlayer(int id, byte dir, float x, float z)
-    {
-        Player player = Instantiate(playerPrefab).GetComponent<Player>();
-        player.Initialize(id, dir, x, z);
         mPlayers.Add(id, player);
     }
 
@@ -151,6 +137,7 @@ public class RPGGameLogic : GameLogic
         monster.OnDead();
     }
 
+    //TODO : 굳이 여기 있을 필요가?
     public void PlayHitFx(Vector3 pos)
     {
         pos.y = 2;
@@ -171,7 +158,9 @@ public class RPGGameLogic : GameLogic
         player.SyncPosition(x, z);
 
         if(id == GameFramework.MyID)
+        {
             Debug.LogError("SYNC_POSITION");
+        }
     }
 
     public override string GetName()

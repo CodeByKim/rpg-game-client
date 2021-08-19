@@ -59,13 +59,4 @@ public static class Protocol
 
         NetworkService.Instance.SendPacket(packet);
     }
-
-    //public static void SEND_TELEPORT_PLAYER(byte dir, float x, float z)
-    //{
-    //    NetPacket packet = NetPacket.Alloc();
-    //    short protocol = Protocol.PACKET_CS_TELEPORT_PLAYER;        
-    //    packet.Push(protocol).Push(dir).Push(x).Push(z);
-
-    //    NetworkService.Instance.SendPacket(packet);
-    //}
 }
