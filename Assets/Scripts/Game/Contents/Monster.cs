@@ -2,53 +2,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Monster : MonoBehaviour
+public class Monster : Entity
 {
     public static readonly int TYPE_A = 0;
     public static readonly int TYPE_B = 1;
 
-    private int mID;
-    private int mHP;
+    private RPGGameLogic mLogic;
 
-    private MoveDirection mCurrentDirection;
-    private Animator mAnimator;
-    private SpriteRenderer mSprite;
-
-    public MoveDirection CurrentDirection
+    public override void Initialize(int id, byte dir, float x, float z)
     {
-        get
-        {
-            return mCurrentDirection;
-        }
-        set
-        {
-            mCurrentDirection = value;
-        }
-    }
+        base.Initialize(id, dir, x, z);
 
-    public void Initialize(int id, byte dir, float x, float z)
-    {
-        mID = id;        
-        CurrentDirection = new MoveDirection(dir);
-        transform.position = new Vector3(x, 0, z);
         mHP = 100;
-
-        mAnimator = GetComponent<Animator>();
-        mSprite = GetComponent<SpriteRenderer>();
-
-        PlayIdleAnimation(CurrentDirection);
+        mLogic = GameFramework.GetGameLogic<RPGGameLogic>();
+        PlayIdleAnimation(mDirection);
     }
 
-    public void Hit(int hp)
+    public override void OnHit(int hp)
     {
         mHP = hp;
-        
-        var logic = GameFramework.GetGameLogic<RPGGameLogic>();
-        logic.PlayHitFx(transform.position);
+
         SoundController.Instance.PlaySoundFx("Hit");
+        mLogic.PlayHitFx(transform.position);        
     }
 
-    public void Dead()
+    public override void OnDead()
     {        
         SoundController.Instance.PlaySoundFx("Dead");
 
@@ -87,14 +65,5 @@ public class Monster : MonoBehaviour
                 mAnimator.SetTrigger("IdleDown");
                 break;
         }
-    }
-
-    void Start()
-    {        
-    }
-    
-    void Update()
-    {
-        
     }
 }

@@ -134,7 +134,7 @@ public class RPGGameLogic : GameLogic
             return;
         }
 
-        monster.Hit(hp);
+        monster.OnHit(hp);
     }
 
     public void DeadMonster(int id)
@@ -147,7 +147,7 @@ public class RPGGameLogic : GameLogic
         }
 
         mMonsters.Remove(id);
-        monster.Dead();
+        monster.OnDead();
     }
 
     public void PlayHitFx(Vector3 pos)
