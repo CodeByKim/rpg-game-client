@@ -38,6 +38,11 @@ public class GameFramework : MonoBehaviour
         return mLoader.GetSound(name);
     }
 
+    public static void LoadResources(ResourcesLoader.ResourceType type, string path)
+    {        
+        mLoader.Load(type, path);
+    }
+
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
@@ -47,9 +52,7 @@ public class GameFramework : MonoBehaviour
     {
         NetworkService.Instance.Initialize();
 
-        RegisterResourceController();
-
-        LoadResources();
+        RegisterResourceController();        
 
         RegisterGameLogic();
 
@@ -72,11 +75,6 @@ public class GameFramework : MonoBehaviour
 
             mResourceControllers.Add(controller.GetType(), controller);
         }
-    }
-
-    private void LoadResources()
-    {        
-        mLoader.Load(ResourcesLoader.ResourceType.Prefab, "Entity");        
     }
 
     private void RegisterMessageHandler()

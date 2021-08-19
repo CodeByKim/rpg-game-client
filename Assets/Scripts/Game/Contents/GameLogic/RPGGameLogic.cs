@@ -23,6 +23,8 @@ public class RPGGameLogic : GameLogic
         mPlayers = new Dictionary<int, Player>();
         mMonsters = new Dictionary<int, Monster>();
 
+        GameFramework.LoadResources(ResourcesLoader.ResourceType.Prefab, "Entity");
+
         mPlayerPrefab = GameFramework.GetPrefab("Player");
         mMonsterTypeAPrefab = GameFramework.GetPrefab("Monster A");
         mMonsterTypeBPrefab = GameFramework.GetPrefab("Monster B");
