@@ -13,7 +13,7 @@ public class Player : MonoBehaviour
     
     private Animator mAnimator;
     private SpriteRenderer mSprite;
-
+    private RPGGameLogic mLogic;
     private MoveDirection mCurrentDirection;
     private int mID;
     private bool mIsMoving;
@@ -34,6 +34,7 @@ public class Player : MonoBehaviour
 
         mAnimator = GetComponent<Animator>();
         mSprite = GetComponent<SpriteRenderer>();
+        mLogic = GameFramework.GetGameLogic<RPGGameLogic>();
     }
     
     public void OnPressMoveButton(MoveDirection direction)
@@ -66,8 +67,10 @@ public class Player : MonoBehaviour
         Protocol.SEND_PLAYER_ATTACK(CurrentDirection.GetValue(),
                                     transform.position.x,
                                     transform.position.z);
-        
+
+        SoundController.Instance.PlaySoundFx("Attack");
         mAnimator.SetBool("IsAttack", true);
+        
     }
 
     public void RemoteMoveStart(byte dir, float x, float z)
@@ -87,7 +90,8 @@ public class Player : MonoBehaviour
     {
         CurrentDirection = new MoveDirection(dir);
         transform.position = new Vector3(x, 0, z);
-        
+
+        SoundController.Instance.PlaySoundFx("Attack");
         mAnimator.SetBool("IsAttack", true);
     }
 

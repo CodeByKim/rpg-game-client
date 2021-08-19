@@ -38,14 +38,17 @@ public class Monster : MonoBehaviour
 
     public void Hit(int hp)
     {
-        mHP = hp;        
-        mAnimator.SetBool("IsHit", true);
-
-        GameFramework.GetGameLogic<RPGGameLogic>().PlayHitFx(transform.position);
+        mHP = hp;
+        
+        var logic = GameFramework.GetGameLogic<RPGGameLogic>();
+        logic.PlayHitFx(transform.position);
+        SoundController.Instance.PlaySoundFx("Hit");
     }
 
     public void Dead()
-    {
+    {        
+        SoundController.Instance.PlaySoundFx("Dead");
+
         StartCoroutine(DeadRoutine());
     }
 
@@ -62,8 +65,8 @@ public class Monster : MonoBehaviour
         switch (direction.GetValue())
         {
             case MoveDirection.MOVE_LEFT:
-                mSprite.flipX = true;
-                mAnimator.SetTrigger("IdleRight");
+                mSprite.flipX = false;
+                mAnimator.SetTrigger("IdleLeft");
                 break;
 
             case MoveDirection.MOVE_UP:
@@ -72,8 +75,8 @@ public class Monster : MonoBehaviour
                 break;
 
             case MoveDirection.MOVE_RIGHT:
-                mSprite.flipX = false;
-                mAnimator.SetTrigger("IdleRight");
+                mSprite.flipX = true;
+                mAnimator.SetTrigger("IdleLeft");
                 break;
 
             case MoveDirection.MOVE_DOWN:
@@ -81,11 +84,6 @@ public class Monster : MonoBehaviour
                 mAnimator.SetTrigger("IdleDown");
                 break;
         }
-    }
-
-    public void StopHit()
-    {
-        mAnimator.SetBool("IsHit", false);
     }
 
     void Start()
