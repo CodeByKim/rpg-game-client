@@ -29,21 +29,22 @@ public class RPGGameLogic : GameLogic
         
     }
 
-    public void Teleport(float x, float z)
-    {
-        Player player = GetPlayer(GameFramework.MyID);
-        player.transform.position = new Vector3(x, 0, z);
+    //public void Teleport(float x, float z)
+    //{
+    //    Player player = GetPlayer(GameFramework.MyID);
+    //    player.transform.position = new Vector3(x, 0, z);
 
-        Protocol.SEND_TELEPORT_PLAYER(player.CurrentDirection.GetValue(), 
-                                      x, 
-                                      z);
-    }
+    //    Protocol.SEND_TELEPORT_PLAYER(player.CurrentDirection.GetValue(), 
+    //                                  x, 
+    //                                  z);
+    //}
 
     public void CreateMyPlayer(int id, byte dir, float x, float z)
     {        
         Player player = Instantiate(playerPrefab).GetComponent<Player>();
         player.Initialize(id, dir, x, z);
         player.name = "MyPlayer";
+
         mPlayers.Add(id, player);
     }
 

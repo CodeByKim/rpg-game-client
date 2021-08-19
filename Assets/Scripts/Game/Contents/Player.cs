@@ -3,38 +3,35 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : Entity
 {    
     public float speed;
-
-    public MoveDirection CurrentDirection { get; set; }    
     
-    public bool IsAttacking => mAnimator.GetBool("IsAttack");
-    
-    private Animator mAnimator;
-    private SpriteRenderer mSprite;
     private RPGGameLogic mLogic;
-    private MoveDirection mCurrentDirection;
-    private int mID;
+    private List<InputButton> mInputButtons;
+    private bool IsAttacking => mAnimator.GetBool("IsAttack");
     private bool mIsMoving;
     
-    private List<InputButton> mInputButtons;
-
-    public void Initialize(int id, byte dir, float x, float z)
+    public override void Initialize(int id, byte dir, float x, float z)
     {
-        mID = id;
+        base.Initialize(id, dir, x, z);
+        
+        mHP = 1000;        
         mIsMoving = false;
-        CurrentDirection = new MoveDirection(dir);
-        transform.position = new Vector3(x, 0, z);
+        mLogic = GameFramework.GetGameLogic<RPGGameLogic>();
+        
+        mInputButtons = new List<InputButton>();
 
-        if(GameFramework.IsMy(mID))
+        mInputButtons.Add(new LeftMoveButton(this));
+        mInputButtons.Add(new UpMoveButton(this));
+        mInputButtons.Add(new RightMoveButton(this));
+        mInputButtons.Add(new DownMoveButton(this));
+        mInputButtons.Add(new AttackButton(this));
+
+        if (GameFramework.IsMy(mID))
         {
             CameraController.Instance.SetTarget(transform);
         }
-
-        mAnimator = GetComponent<Animator>();
-        mSprite = GetComponent<SpriteRenderer>();
-        mLogic = GameFramework.GetGameLogic<RPGGameLogic>();
     }
     
     public void OnPressMoveButton(MoveDirection direction)
@@ -46,14 +43,14 @@ public class Player : MonoBehaviour
 
         if(!mIsMoving)
         {
-            CurrentDirection = direction;
+            mDirection = direction;
             mIsMoving = true;
 
-            Protocol.SEND_PLAYER_MOVE_START(CurrentDirection.GetValue(), 
+            Protocol.SEND_PLAYER_MOVE_START(mDirection.GetValue(), 
                                             transform.position.x, 
                                             transform.position.z);
 
-            PlayMoveAnimation(CurrentDirection);
+            PlayMoveAnimation(mDirection);
         }        
     }
 
@@ -64,7 +61,7 @@ public class Player : MonoBehaviour
             return;
         }
 
-        Protocol.SEND_PLAYER_ATTACK(CurrentDirection.GetValue(),
+        Protocol.SEND_PLAYER_ATTACK(mDirection.GetValue(),
                                     transform.position.x,
                                     transform.position.z);
 
@@ -73,21 +70,21 @@ public class Player : MonoBehaviour
     }
 
     public void RemoteMoveStart(byte dir, float x, float z)
-    {    
-        CurrentDirection = new MoveDirection(dir);
-        PlayMoveAnimation(CurrentDirection);
+    {
+        mDirection = new MoveDirection(dir);
+        PlayMoveAnimation(mDirection);
         mIsMoving = true;
     }
 
     public void RemoteMoveEnd(byte dir, float x, float z)
-    {        
-        CurrentDirection = new MoveDirection(dir);
+    {
+        mDirection = new MoveDirection(dir);
         mIsMoving = false;
     }
 
     public void RemoteAttack(byte dir, float x, float z)
     {
-        CurrentDirection = new MoveDirection(dir);
+        mDirection = new MoveDirection(dir);
         transform.position = new Vector3(x, 0, z);
 
         SoundController.Instance.PlaySoundFx("Attack");
@@ -99,21 +96,7 @@ public class Player : MonoBehaviour
         transform.position = new Vector3(x, 0, z);
     }
 
-    void Start()
-    {        
-        mInputButtons = new List<InputButton>();
-
-        mInputButtons.Add(new LeftMoveButton(this));
-        mInputButtons.Add(new UpMoveButton(this));
-        mInputButtons.Add(new RightMoveButton(this));
-        mInputButtons.Add(new DownMoveButton(this));
-        mInputButtons.Add(new AttackButton(this));
-        
-        mAnimator = GetComponent<Animator>();
-        mSprite = GetComponent<SpriteRenderer>();
-    }
-
-    void Update()
+    private void Update()
     {        
         if(GameFramework.IsMy(mID))
         {
@@ -137,7 +120,7 @@ public class Player : MonoBehaviour
         {
             mIsMoving = false;
 
-            Protocol.SEND_PLAYER_MOVE_END(CurrentDirection.GetValue(), 
+            Protocol.SEND_PLAYER_MOVE_END(mDirection.GetValue(), 
                                           transform.position.x, 
                                           transform.position.z);
         }
@@ -147,7 +130,7 @@ public class Player : MonoBehaviour
     {
         if (mIsMoving)
         {
-            Vector3 moveDir = CurrentDirection.ToVector();
+            Vector3 moveDir = mDirection.ToVector();
             Vector3 offset = moveDir * Time.deltaTime * speed;
             Vector3 result = transform.position + offset;
 
@@ -193,5 +176,15 @@ public class Player : MonoBehaviour
     public void AttackStop()
     {        
         mAnimator.SetBool("IsAttack", false);
+    }
+
+    public override void OnHit(int hp)
+    {
+        // 아직 기능 없음
+    }
+
+    public override void OnDead()
+    {
+        // 아직 기능 없음
     }
 }

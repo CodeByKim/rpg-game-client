@@ -22,7 +22,7 @@ public static class Protocol
     public const short PACKET_SC_MONSTER_DEAD = 13;
 
     public const short PACKET_SC_SYNC_POSITION = 99;    
-    public const short PACKET_CS_TELEPORT_PLAYER = 100;
+    //public const short PACKET_CS_TELEPORT_PLAYER = 100;
 
     public static void SEND_CREATE_MY_PLAYER()
     {
@@ -60,12 +60,12 @@ public static class Protocol
         NetworkService.Instance.SendPacket(packet);
     }
 
-    public static void SEND_TELEPORT_PLAYER(byte dir, float x, float z)
-    {
-        NetPacket packet = NetPacket.Alloc();
-        short protocol = Protocol.PACKET_CS_TELEPORT_PLAYER;        
-        packet.Push(protocol).Push(dir).Push(x).Push(z);
+    //public static void SEND_TELEPORT_PLAYER(byte dir, float x, float z)
+    //{
+    //    NetPacket packet = NetPacket.Alloc();
+    //    short protocol = Protocol.PACKET_CS_TELEPORT_PLAYER;        
+    //    packet.Push(protocol).Push(dir).Push(x).Push(z);
 
-        NetworkService.Instance.SendPacket(packet);
-    }
+    //    NetworkService.Instance.SendPacket(packet);
+    //}
 }

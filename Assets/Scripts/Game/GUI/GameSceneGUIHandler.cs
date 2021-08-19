@@ -10,9 +10,4 @@ public class GameSceneGUIHandler : MonoBehaviour
     {
         mLogic = GameFramework.GetGameLogic<RPGGameLogic>();
     }
-
-    public void OnTeleportButtonClick()
-    {
-        mLogic.Teleport(5, 5);
-    }
 }
