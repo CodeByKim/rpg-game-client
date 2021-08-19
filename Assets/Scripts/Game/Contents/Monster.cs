@@ -40,6 +40,8 @@ public class Monster : MonoBehaviour
     {
         mHP = hp;        
         mAnimator.SetBool("IsHit", true);
+
+        Debug.Log("IsHit");
     }
 
     public void Dead()
@@ -56,9 +58,7 @@ public class Monster : MonoBehaviour
     }
 
     private void PlayIdleAnimation(MoveDirection direction)
-    {
-        Debug.Log(direction.GetValue());
-
+    {        
         switch (direction.GetValue())
         {
             case MoveDirection.MOVE_LEFT:
