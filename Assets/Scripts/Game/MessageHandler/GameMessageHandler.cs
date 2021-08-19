@@ -145,11 +145,12 @@ public class GameMessageHandler : MonoBehaviour, IMessageHandler
     {
         int id;
         byte dir;
+        byte type;
         float x;
         float z;
-        packet.Pop(out id).Pop(out dir).Pop(out x).Pop(out z);
+        packet.Pop(out id).Pop(out dir).Pop(out type).Pop(out x).Pop(out z);
 
-        mLogic.CreateMonster(id, dir, x, z);
+        mLogic.CreateMonster(id, dir, type, x, z);
     }
 
     private void PacketRemoveMonster(NetPacket packet)

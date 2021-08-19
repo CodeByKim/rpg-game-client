@@ -11,7 +11,8 @@ public class RPGGameLogic : GameLogic
 {
     [Header("Prefabs")]
     [SerializeField] private GameObject playerPrefab;
-    [SerializeField] private GameObject monsterPrefab;
+    [SerializeField] private GameObject monsterTypeAPrefab;
+    [SerializeField] private GameObject monsterTypeBPrefab;
     [SerializeField] private GameObject hitFxPrefab;
 
     private Dictionary<int, Player> mPlayers;
@@ -99,9 +100,14 @@ public class RPGGameLogic : GameLogic
         player.RemoteAttack(dir, x, z);
     }
 
-    public void CreateMonster(int id, byte dir, float x, float z)
+    public void CreateMonster(int id, byte dir, byte type, float x, float z)
     {
-        Monster monster = Instantiate(monsterPrefab).GetComponent<Monster>();
+        Monster monster;
+        if (type == Monster.TYPE_A)
+            monster = Instantiate(monsterTypeAPrefab).GetComponent<Monster>();
+        else
+            monster = Instantiate(monsterTypeBPrefab).GetComponent<Monster>();
+
         monster.Initialize(id, dir, x, z);
         mMonsters.Add(id, monster);
     }

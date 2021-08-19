@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Monster : MonoBehaviour
 {
+    public static readonly int TYPE_A = 0;
+    public static readonly int TYPE_B = 1;
+
     private int mID;
     private int mHP;
 

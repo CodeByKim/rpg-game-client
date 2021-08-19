@@ -69,8 +69,7 @@ public class Player : MonoBehaviour
                                     transform.position.z);
 
         SoundController.Instance.PlaySoundFx("Attack");
-        mAnimator.SetBool("IsAttack", true);
-        
+        mAnimator.SetBool("IsAttack", true);        
     }
 
     public void RemoteMoveStart(byte dir, float x, float z)
