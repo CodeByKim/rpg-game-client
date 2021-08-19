@@ -8,7 +8,8 @@ public class Monster : MonoBehaviour
     private int mHP;
 
     private MoveDirection mCurrentDirection;
-    private Animation mAnimation;
+    private Animator mAnimator;
+    private SpriteRenderer mSprite;
 
     public MoveDirection CurrentDirection
     {
@@ -19,25 +20,6 @@ public class Monster : MonoBehaviour
         set
         {
             mCurrentDirection = value;
-
-            switch (mCurrentDirection.GetValue())
-            {
-                case MoveDirection.MOVE_LEFT:
-                    transform.eulerAngles = new Vector3(0, -90, 0);
-                    break;
-
-                case MoveDirection.MOVE_UP:
-                    transform.eulerAngles = new Vector3(0, 0, 0);
-                    break;
-
-                case MoveDirection.MOVE_RIGHT:
-                    transform.eulerAngles = new Vector3(0, 90, 0);
-                    break;
-
-                case MoveDirection.MOVE_DOWN:
-                    transform.eulerAngles = new Vector3(0, 180, 0);
-                    break;
-            }
         }
     }
 
@@ -47,12 +29,17 @@ public class Monster : MonoBehaviour
         CurrentDirection = new MoveDirection(dir);
         transform.position = new Vector3(x, 0, z);
         mHP = 100;
+
+        mAnimator = GetComponent<Animator>();
+        mSprite = GetComponent<SpriteRenderer>();
+
+        PlayIdleAnimation(CurrentDirection);
     }
 
     public void Hit(int hp)
     {
-        mHP = hp;
-        mAnimation.CrossFade("MonsterHit");
+        mHP = hp;        
+        mAnimator.SetBool("IsHit", true);
     }
 
     public void Dead()
@@ -61,16 +48,48 @@ public class Monster : MonoBehaviour
     }
 
     private IEnumerator DeadRoutine()
-    {
-        mAnimation.CrossFade("MonsterDead");
+    {        
+        mAnimator.SetTrigger("Dead");
         yield return new WaitForSeconds(1);
 
         Destroy(gameObject);
     }
 
-    void Start()
+    private void PlayIdleAnimation(MoveDirection direction)
     {
-        mAnimation = GetComponent<Animation>();
+        Debug.Log(direction.GetValue());
+
+        switch (direction.GetValue())
+        {
+            case MoveDirection.MOVE_LEFT:
+                mSprite.flipX = true;
+                mAnimator.SetTrigger("IdleRight");
+                break;
+
+            case MoveDirection.MOVE_UP:
+                mSprite.flipX = false;
+                mAnimator.SetTrigger("IdleUp");
+                break;
+
+            case MoveDirection.MOVE_RIGHT:
+                mSprite.flipX = false;
+                mAnimator.SetTrigger("IdleRight");
+                break;
+
+            case MoveDirection.MOVE_DOWN:
+                mSprite.flipX = false;
+                mAnimator.SetTrigger("IdleDown");
+                break;
+        }
+    }
+
+    public void StopHit()
+    {
+        mAnimator.SetBool("IsHit", false);
+    }
+
+    void Start()
+    {        
     }
     
     void Update()
