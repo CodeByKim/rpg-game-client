@@ -21,8 +21,7 @@ public static class Protocol
     public const short PACKET_SC_MONSTER_HIT = 12;
     public const short PACKET_SC_MONSTER_DEAD = 13;
 
-    public const short PACKET_SC_SYNC_POSITION = 99;    
-    //public const short PACKET_CS_TELEPORT_PLAYER = 100;
+    public const short PACKET_SC_SYNC_POSITION = 99;        
 
     public static void SEND_CREATE_MY_PLAYER()
     {

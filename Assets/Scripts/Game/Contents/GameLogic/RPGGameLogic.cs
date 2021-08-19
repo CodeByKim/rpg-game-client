@@ -15,8 +15,6 @@ public class RPGGameLogic : GameLogic
     private GameObject mMonsterTypeAPrefab;
     private GameObject mMonsterTypeBPrefab;
 
-    //[SerializeField] private GameObject hitFxPrefab;
-
     private Dictionary<int, Player> mPlayers;
     private Dictionary<int, Monster> mMonsters;
 
@@ -141,16 +139,6 @@ public class RPGGameLogic : GameLogic
 
         mMonsters.Remove(id);
         monster.OnDead();
-    }
-
-    //TODO : 굳이 여기 있을 필요가?
-    public void PlayHitFx(Vector3 pos)
-    {
-        //pos.y = 2;
-        //GameObject fx = Instantiate(hitFxPrefab);
-        //fx.transform.position = pos;
-
-        //Destroy(fx, .5f);
     }
 
     public void SetPlayerSync(int id, float x, float z)    

@@ -65,7 +65,7 @@ public class Player : Entity
                                     transform.position.x,
                                     transform.position.z);
 
-        SoundController.Instance.PlaySoundFx("Attack");
+        GameFramework.GetController<SoundController>().Play("Attack");        
         mAnimator.SetBool("IsAttack", true);        
     }
 
@@ -87,7 +87,7 @@ public class Player : Entity
         mDirection = new MoveDirection(dir);
         transform.position = new Vector3(x, 0, z);
 
-        SoundController.Instance.PlaySoundFx("Attack");
+        GameFramework.GetController<SoundController>().Play("Attack");        
         mAnimator.SetBool("IsAttack", true);
     }
 

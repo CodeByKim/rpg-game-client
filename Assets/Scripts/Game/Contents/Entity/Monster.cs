@@ -22,13 +22,13 @@ public class Monster : Entity
     {
         mHP = hp;
 
-        SoundController.Instance.PlaySoundFx("Hit");
-        mLogic.PlayHitFx(transform.position);        
+        GameFramework.GetController<SoundController>().Play("Hit");
+        GameFramework.GetController<VFXController>().Play("Hit", transform.position);
     }
 
     public override void OnDead()
     {        
-        SoundController.Instance.PlaySoundFx("Dead");
+        GameFramework.GetController<SoundController>().Play("Dead");
 
         StartCoroutine(DeadRoutine());
     }

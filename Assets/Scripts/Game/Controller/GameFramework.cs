@@ -7,6 +7,7 @@ public class GameFramework : MonoBehaviour
 {
     private static ResourcesLoader mLoader;
     private static Dictionary<System.Type, GameLogic> mLogics;
+    private static Dictionary<System.Type, IFxController> mResourceControllers;
 
     public static int MyID;
     
@@ -14,6 +15,12 @@ public class GameFramework : MonoBehaviour
     {
         System.Type type = typeof(T);
         return mLogics[type] as T;
+    }
+
+    public static T GetController<T>() where T : class, IFxController
+    {
+        System.Type type = typeof(T);
+        return mResourceControllers[type] as T;
     }
 
     public static bool IsMy(int id)
@@ -40,6 +47,8 @@ public class GameFramework : MonoBehaviour
     {
         NetworkService.Instance.Initialize();
 
+        RegisterResourceController();
+
         LoadResources();
 
         RegisterGameLogic();
@@ -49,13 +58,25 @@ public class GameFramework : MonoBehaviour
         Debug.Log("Start Game !");        
     }
 
-    private void LoadResources()
+    private void RegisterResourceController()
     {
         mLoader = new ResourcesLoader();
+        mResourceControllers = new Dictionary<System.Type, IFxController>();
 
-        mLoader.Load(ResourcesLoader.ResourceType.Prefab, "Entity");
-        mLoader.Load(ResourcesLoader.ResourceType.Prefab, "Fx");
-        mLoader.Load(ResourcesLoader.ResourceType.Sound);
+        Transform controllerParent = transform.Find("Resource Controllers");
+
+        for (int i = 0; i < controllerParent.childCount; i++)
+        {
+            IFxController controller = controllerParent.GetChild(i).GetComponent<IFxController>();
+            controller.OnInitialize(mLoader);
+
+            mResourceControllers.Add(controller.GetType(), controller);
+        }
+    }
+
+    private void LoadResources()
+    {        
+        mLoader.Load(ResourcesLoader.ResourceType.Prefab, "Entity");        
     }
 
     private void RegisterMessageHandler()
@@ -81,7 +102,7 @@ public class GameFramework : MonoBehaviour
             GameLogic logic = logicParent.GetChild(i).GetComponent<GameLogic>();
             logic.OnInitialzie();
 
-            mLogics.Add(logic.GetType(), logic);            
+            mLogics.Add(logic.GetType(), logic);
         }        
     }
 }

@@ -2,42 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SoundController : MonoBehaviour
-{
-    [Header("Audio Clips")]
-    [SerializeField] private AudioClip attackSound;
-    [SerializeField] private AudioClip hitSound;
-    [SerializeField] private AudioClip deadSound;
-
-    public static SoundController Instance;
-
+public class SoundController : MonoBehaviour, IFxController
+{    
     private AudioSource mAudio;
-    
-    private void Awake()
-    {
-        Instance = this;
-    }
+    private ResourcesLoader mLoader;
 
-    void Start()
+    public void OnInitialize(ResourcesLoader loader)
     {
         mAudio = GetComponent<AudioSource>();
+
+        mLoader = loader;
+        mLoader.Load(ResourcesLoader.ResourceType.Sound);
     }
-    
-    public void PlaySoundFx(string name)
+
+    public void Play(string name)
     {
-        switch (name)
-        {
-            case "Attack":                
-                mAudio.PlayOneShot(attackSound);
-                break;
-
-            case "Hit":
-                mAudio.PlayOneShot(hitSound);
-                break;
-
-            case "Dead":
-                mAudio.PlayOneShot(deadSound);
-                break;
-        }
+        AudioClip clip = mLoader.GetSound(name);
+        mAudio.PlayOneShot(clip);
     }
 }
