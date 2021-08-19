@@ -82,7 +82,7 @@ public class AttackButton : InputButton
 
     public override void Poll()
     {
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {            
             mPlayer.OnPressAttackButton();
         }

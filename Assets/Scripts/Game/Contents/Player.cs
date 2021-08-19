@@ -58,7 +58,7 @@ public class Player : MonoBehaviour
     }
 
     public void OnPressAttackButton()
-    {
+    {       
         if (IsAttacking || mIsMoving)
         {
             return;
