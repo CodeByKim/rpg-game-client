@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameFramework : MonoBehaviour
-{    
+{
+    private static ResourcesLoader mLoader;
     private static Dictionary<System.Type, GameLogic> mLogics;
 
     public static int MyID;
@@ -20,6 +21,16 @@ public class GameFramework : MonoBehaviour
         return MyID == id;
     }
 
+    public static GameObject GetPrefab(string name)
+    {
+        return mLoader.GetPrefab(name);
+    }
+
+    public static AudioClip GetSound(string name)
+    {
+        return mLoader.GetSound(name);
+    }
+
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
@@ -29,11 +40,22 @@ public class GameFramework : MonoBehaviour
     {
         NetworkService.Instance.Initialize();
 
+        LoadResources();
+
         RegisterGameLogic();
 
         RegisterMessageHandler();
 
-        Debug.Log("Start Game");
+        Debug.Log("Start Game !");        
+    }
+
+    private void LoadResources()
+    {
+        mLoader = new ResourcesLoader();
+
+        mLoader.Load(ResourcesLoader.ResourceType.Prefab, "Entity");
+        mLoader.Load(ResourcesLoader.ResourceType.Prefab, "Fx");
+        mLoader.Load(ResourcesLoader.ResourceType.Sound);
     }
 
     private void RegisterMessageHandler()
@@ -57,6 +79,7 @@ public class GameFramework : MonoBehaviour
         for (int i = 0; i < logicParent.childCount; i++)
         {
             GameLogic logic = logicParent.GetChild(i).GetComponent<GameLogic>();
+            logic.OnInitialzie();
 
             mLogics.Add(logic.GetType(), logic);            
         }        

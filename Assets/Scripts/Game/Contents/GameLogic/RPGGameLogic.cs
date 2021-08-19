@@ -5,28 +5,34 @@ using UnityEngine;
 public abstract class GameLogic : MonoBehaviour
 {
     public abstract string GetName();
+
+    public abstract void OnInitialzie();
 }
 
 public class RPGGameLogic : GameLogic
 {
-    [Header("Prefabs")]
-    [SerializeField] private GameObject playerPrefab;
-    [SerializeField] private GameObject monsterTypeAPrefab;
-    [SerializeField] private GameObject monsterTypeBPrefab;
-    [SerializeField] private GameObject hitFxPrefab;
+    private GameObject mPlayerPrefab;
+    private GameObject mMonsterTypeAPrefab;
+    private GameObject mMonsterTypeBPrefab;
+
+    //[SerializeField] private GameObject hitFxPrefab;
 
     private Dictionary<int, Player> mPlayers;
     private Dictionary<int, Monster> mMonsters;
 
-    void Start()
+    public override void OnInitialzie()
     {
         mPlayers = new Dictionary<int, Player>();
         mMonsters = new Dictionary<int, Monster>();
+
+        mPlayerPrefab = GameFramework.GetPrefab("Player");
+        mMonsterTypeAPrefab = GameFramework.GetPrefab("Monster A");
+        mMonsterTypeBPrefab = GameFramework.GetPrefab("Monster B");
     }
 
     public void CreateMyPlayer(int id, byte dir, float x, float z, bool isMy)
-    {        
-        Player player = Instantiate(playerPrefab).GetComponent<Player>();
+    {                
+        Player player = Instantiate(mPlayerPrefab).GetComponent<Player>();
         player.Initialize(id, dir, x, z);
 
         if(isMy)
@@ -91,9 +97,9 @@ public class RPGGameLogic : GameLogic
     {
         Monster monster;
         if (type == Monster.TYPE_A)
-            monster = Instantiate(monsterTypeAPrefab).GetComponent<Monster>();
+            monster = Instantiate(mMonsterTypeAPrefab).GetComponent<Monster>();
         else
-            monster = Instantiate(monsterTypeBPrefab).GetComponent<Monster>();
+            monster = Instantiate(mMonsterTypeBPrefab).GetComponent<Monster>();
 
         monster.Initialize(id, dir, x, z);
         mMonsters.Add(id, monster);
@@ -140,11 +146,11 @@ public class RPGGameLogic : GameLogic
     //TODO : 굳이 여기 있을 필요가?
     public void PlayHitFx(Vector3 pos)
     {
-        pos.y = 2;
-        GameObject fx = Instantiate(hitFxPrefab);
-        fx.transform.position = pos;
+        //pos.y = 2;
+        //GameObject fx = Instantiate(hitFxPrefab);
+        //fx.transform.position = pos;
 
-        Destroy(fx, .5f);
+        //Destroy(fx, .5f);
     }
 
     public void SetPlayerSync(int id, float x, float z)    

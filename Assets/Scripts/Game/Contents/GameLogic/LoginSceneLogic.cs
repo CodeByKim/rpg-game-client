@@ -28,4 +28,8 @@ public class LoginSceneLogic : GameLogic
             Protocol.SEND_CREATE_MY_PLAYER();
         }
     }
+
+    public override void OnInitialzie()
+    {
+    }
 }
