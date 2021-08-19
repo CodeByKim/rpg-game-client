@@ -41,7 +41,7 @@ public class Monster : MonoBehaviour
         mHP = hp;        
         mAnimator.SetBool("IsHit", true);
 
-        Debug.Log("IsHit");
+        GameFramework.GetGameLogic<RPGGameLogic>().PlayHitFx(transform.position);
     }
 
     public void Dead()

@@ -12,6 +12,7 @@ public class RPGGameLogic : GameLogic
     [Header("Prefabs")]
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private GameObject monsterPrefab;
+    [SerializeField] private GameObject hitFxPrefab;
 
     private Dictionary<int, Player> mPlayers;
     private Dictionary<int, Monster> mMonsters;
@@ -141,6 +142,15 @@ public class RPGGameLogic : GameLogic
 
         mMonsters.Remove(id);
         monster.Dead();
+    }
+
+    public void PlayHitFx(Vector3 pos)
+    {
+        pos.y = 2;
+        GameObject fx = Instantiate(hitFxPrefab);
+        fx.transform.position = pos;
+
+        Destroy(fx, .5f);
     }
 
     public void SetPlayerSync(int id, float x, float z)    
