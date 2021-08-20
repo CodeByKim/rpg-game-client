@@ -41,6 +41,11 @@ public class Monster : Entity
         Destroy(gameObject);
     }
 
+    private void Update()
+    {
+        mSprite.sortingOrder = Mathf.RoundToInt(transform.position.z) * -1;
+    }
+
     private void PlayIdleAnimation(MoveDirection direction)
     {        
         switch (direction.GetValue())
