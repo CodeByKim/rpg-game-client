@@ -104,7 +104,8 @@ public class Player : Entity
             ProcessInput();
         }
 
-        Move();        
+        Move();
+        mSprite.sortingOrder = Mathf.RoundToInt(transform.position.z) * -1;
     }
 
     private void ProcessInput()
