@@ -10,27 +10,23 @@ public abstract class GameLogic : MonoBehaviour
 }
 
 public class RPGGameLogic : GameLogic
-{
-    private GameObject mPlayerPrefab;
-    private GameObject mMonsterTypeAPrefab;
-    private GameObject mMonsterTypeBPrefab;
-
+{    
     private Dictionary<int, Player> mPlayers;
     private Dictionary<int, Monster> mMonsters;
+
+    private PrefabController mPrefabController;
 
     public override void OnInitialzie()
     {
         mPlayers = new Dictionary<int, Player>();
         mMonsters = new Dictionary<int, Monster>();
-        
-        mPlayerPrefab = GameFramework.GetPrefab("Player");
-        mMonsterTypeAPrefab = GameFramework.GetPrefab("Monster A");
-        mMonsterTypeBPrefab = GameFramework.GetPrefab("Monster B");
+
+        mPrefabController = GameFramework.GetController<PrefabController>();
     }
 
     public void CreateMyPlayer(int id, byte dir, float x, float z, bool isMy)
-    {                
-        Player player = Instantiate(mPlayerPrefab).GetComponent<Player>();
+    {        
+        Player player = mPrefabController.Create("Player").GetComponent<Player>();
         player.Initialize(id, dir, x, z);
 
         if(isMy)
@@ -94,10 +90,11 @@ public class RPGGameLogic : GameLogic
     public void CreateMonster(int id, byte dir, byte type, float x, float z)
     {
         Monster monster;
+
         if (type == Monster.TYPE_A)
-            monster = Instantiate(mMonsterTypeAPrefab).GetComponent<Monster>();
+            monster = mPrefabController.Create("Monster A").GetComponent<Monster>();        
         else
-            monster = Instantiate(mMonsterTypeBPrefab).GetComponent<Monster>();
+            monster = mPrefabController.Create("Monster B").GetComponent<Monster>();
 
         monster.Initialize(id, dir, x, z);
         mMonsters.Add(id, monster);
