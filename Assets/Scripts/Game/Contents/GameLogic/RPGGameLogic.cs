@@ -92,15 +92,9 @@ public class RPGGameLogic : GameLogic
         player.RemoteAttack(dir, x, z);
     }
 
-    public void CreateMonster(int id, byte dir, byte type, float x, float z)
+    public void CreateMonster(int id, byte dir, float x, float z)
     {
-        Monster monster;
-
-        if (type == Monster.TYPE_A)
-            monster = mPrefabController.Create("Monster A").GetComponent<Monster>();        
-        else
-            monster = mPrefabController.Create("Monster C").GetComponent<Monster>();
-
+        Monster monster = mPrefabController.Create("Monster").GetComponent<Monster>();
         monster.Initialize(id, dir, x, z);
         mMonsters.Add(id, monster);
     }
