@@ -17,7 +17,7 @@ public class TreeCreater : MonoBehaviour
         {
             Vector3 pos = new Vector3(Random.Range(0, 1000), 0, Random.Range(0, 1000));
 
-            int treeType = Random.Range(0, 3);
+            int treeType = Random.Range(0, treePrefab.Length);
             GameObject tree = Instantiate(treePrefab[treeType]);
             tree.transform.position = pos;
             tree.transform.SetParent(parent.transform);
