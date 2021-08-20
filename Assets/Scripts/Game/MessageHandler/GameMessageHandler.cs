@@ -87,7 +87,7 @@ public class GameMessageHandler : MonoBehaviour, IMessageHandler
         packet.Pop(out id).Pop(out dir).Pop(out x).Pop(out z);
         
         GameFramework.MyID = id;
-        mLogic.CreateMyPlayer(id, dir, x, z, true);
+        mLogic.CreatePlayer(id, dir, x, z, true);
     }
 
     private void PacketCreateOtherPlayer(NetPacket packet)
@@ -98,7 +98,7 @@ public class GameMessageHandler : MonoBehaviour, IMessageHandler
         float z;
         packet.Pop(out id).Pop(out dir).Pop(out x).Pop(out z);
         
-        mLogic.CreateMyPlayer(id, dir, x, z, false);
+        mLogic.CreatePlayer(id, dir, x, z, false);
     }
 
     private void PacketDeleteOtherPlayer(NetPacket packet)

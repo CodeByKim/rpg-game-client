@@ -80,6 +80,7 @@ public class Player : Entity
     {
         mDirection = new MoveDirection(dir);
         mIsMoving = false;
+        mAnimator.SetBool("IsMove", false);
     }
 
     public void RemoteAttack(byte dir, float x, float z)
@@ -119,6 +120,7 @@ public class Player : Entity
             Input.GetKeyUp(KeyCode.DownArrow))
         {
             mIsMoving = false;
+            mAnimator.SetBool("IsMove", false);
 
             Protocol.SEND_PLAYER_MOVE_END(mDirection.GetValue(), 
                                           transform.position.x, 
@@ -149,26 +151,28 @@ public class Player : Entity
 
     private void PlayMoveAnimation(MoveDirection direction)
     {
+        mAnimator.SetBool("IsMove", true);
+
         switch (direction.GetValue())
         {
             case MoveDirection.MOVE_LEFT:
-                mSprite.flipX = false;
-                mAnimator.SetTrigger("MoveLeft");
+                //mSprite.flipX = false;
+                mAnimator.SetTrigger("Left");
                 break;
 
             case MoveDirection.MOVE_UP:
-                mSprite.flipX = false;
-                mAnimator.SetTrigger("MoveUp");
+                //mSprite.flipX = false;
+                mAnimator.SetTrigger("Up");
                 break;
 
             case MoveDirection.MOVE_RIGHT:
-                mSprite.flipX = true;
-                mAnimator.SetTrigger("MoveLeft");
+                //mSprite.flipX = true;
+                mAnimator.SetTrigger("Right");
                 break;
 
             case MoveDirection.MOVE_DOWN:
-                mSprite.flipX = false;
-                mAnimator.SetTrigger("MoveDown");
+                //mSprite.flipX = false;
+                mAnimator.SetTrigger("Down");
                 break;
         }
     }

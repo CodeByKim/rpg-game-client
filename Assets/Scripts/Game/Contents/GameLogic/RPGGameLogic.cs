@@ -24,7 +24,7 @@ public class RPGGameLogic : GameLogic
         mPrefabController = GameFramework.GetController<PrefabController>();
     }
 
-    public void CreateMyPlayer(int id, byte dir, float x, float z, bool isMy)
+    public void CreatePlayer(int id, byte dir, float x, float z, bool isMy)
     {        
         Player player = mPrefabController.Create("Player").GetComponent<Player>();
         player.Initialize(id, dir, x, z);
