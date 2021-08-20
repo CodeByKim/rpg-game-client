@@ -12,6 +12,11 @@ public class PrefabController : MonoBehaviour, IResourceController
         mLoader.Load(ResourcesLoader.ResourceType.Prefab, "Prefabs");        
     }
 
+    public GameObject GetPrefab(string name)
+    {
+        return mLoader.GetPrefab(name);
+    }
+
     public GameObject Create(string name)
     {
         GameObject prefab = mLoader.GetPrefab(name);

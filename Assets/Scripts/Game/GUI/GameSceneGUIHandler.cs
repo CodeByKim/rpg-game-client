@@ -3,6 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+public class PlayerIDTextUI : PoolObject
+{
+    public void Initialize()
+    {
+        
+    }
+}
+
 public class GameSceneGUIHandler : MonoBehaviour
 {
     private RPGGameLogic mLogic;
@@ -11,6 +19,8 @@ public class GameSceneGUIHandler : MonoBehaviour
     private Dictionary<int, GameObject> mPlayerNameTexts;
     private List<int> mRemovedPlayerID;
 
+    private ObjectPool<PlayerIDTextUI> mPlayerNamePool;
+
     private void Start()
     {
         mLogic = GameFramework.GetGameLogic<RPGGameLogic>();
@@ -18,6 +28,9 @@ public class GameSceneGUIHandler : MonoBehaviour
 
         mPlayerNameTexts = new Dictionary<int, GameObject>();
         mRemovedPlayerID = new List<int>();
+
+        GameObject nameUIPrefab = mController.GetPrefab("PlayerNameUI");
+        mPlayerNamePool = new ObjectPool<PlayerIDTextUI>(20, nameUIPrefab);        
     }
 
     private void LateUpdate()
