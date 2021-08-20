@@ -97,17 +97,16 @@ public class Player : Entity
         transform.position = new Vector3(x, 0, z);
     }
 
-    private void Update()
-    {        
-        if(GameFramework.IsMy(mID))
+    protected override void Update()
+    {
+        base.Update();
+
+        if (GameFramework.IsMy(mID))
         {
             ProcessInput();
         }
 
         Move();
-
-        // TODO : 공통 부분으로 묶자.
-        mSprite.sortingOrder = Mathf.RoundToInt(transform.position.z) * -1;
     }
 
     private void ProcessInput()

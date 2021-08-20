@@ -41,10 +41,9 @@ public class Monster : Entity
         Destroy(gameObject);
     }
 
-    private void Update()
+    protected override void Update()
     {
-        // TODO : 공통 부분으로 묶자.
-        mSprite.sortingOrder = Mathf.RoundToInt(transform.position.z) * -1;
+        base.Update();
     }
 
     private void PlayIdleAnimation(MoveDirection direction)

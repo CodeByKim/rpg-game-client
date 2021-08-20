@@ -27,4 +27,14 @@ public abstract class Entity : MonoBehaviour
     public abstract void OnHit(int hp);
 
     public abstract void OnDead();
+
+    protected virtual void Update()
+    {
+        CalcSortingOrderForAxisZ();
+    }
+
+    private void CalcSortingOrderForAxisZ()
+    {
+        mSprite.sortingOrder = Mathf.RoundToInt(transform.position.z) * -1;
+    }
 }
