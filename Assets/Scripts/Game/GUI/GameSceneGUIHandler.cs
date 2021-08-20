@@ -8,7 +8,7 @@ public class GameSceneGUIHandler : MonoBehaviour
     private RPGGameLogic mLogic;
     private PrefabController mController;
 
-    private Dictionary<int, GameObject> mPlayerNameTexts;
+    private Dictionary<int, PlayerIDTextUI> mPlayerNameTexts;
     private List<int> mRemovedPlayerID;
 
     private ObjectPool<PlayerIDTextUI> mPlayerNamePool;
@@ -18,13 +18,13 @@ public class GameSceneGUIHandler : MonoBehaviour
         mLogic = GameFramework.GetGameLogic<RPGGameLogic>();
         mController = GameFramework.GetController<PrefabController>();
 
-        mPlayerNameTexts = new Dictionary<int, GameObject>();
+        mPlayerNameTexts = new Dictionary<int, PlayerIDTextUI>();
         mRemovedPlayerID = new List<int>();
 
         GameObject nameUIPrefab = mController.GetPrefab("PlayerNameUI");
-        mPlayerNamePool = new ObjectPool<PlayerIDTextUI>(20, nameUIPrefab);        
+        mPlayerNamePool = new ObjectPool<PlayerIDTextUI>(20, nameUIPrefab, transform);        
     }
-
+    
     private void LateUpdate()
     {
         Dictionary<int, Player> players = mLogic.GetCurrentPlayers();
@@ -33,37 +33,29 @@ public class GameSceneGUIHandler : MonoBehaviour
         {
             Player player = item.Value;
 
-            //아이디를 가져오고
-            int playerID = player.GetID();
-           // string playerID = MakePlayerID(player.GetID());
+            // 아이디를 가져오고
+            int playerID = player.GetID();           
 
-            //이 아이디가 현재 화면에 생성되었는지 확인한다.                        
+            // 이 아이디가 현재 화면에 생성되었는지 확인한다.                        
             if(mPlayerNameTexts.ContainsKey(playerID))
             {
-                //생성되어 있다면 좌표 갱신
-                Transform textUI = mPlayerNameTexts[playerID].transform;
-                Vector3 pos = Camera.main.WorldToScreenPoint(player.transform.position);
-                textUI.position = new Vector2(pos.x, pos.y + 100);
+                // 생성되어 있다면 좌표 갱신
+                PlayerIDTextUI textUI = mPlayerNameTexts[playerID];
+                textUI.UpdatePosition();
             }
             else
             {
-                //없다면 새로 섹터에 들어온 플레이어이니 프리팹을 생성하고 연동시킨다.
-                Transform textUI = mController.Create("PlayerNameUI").transform;
-                textUI.SetParent(transform);
-                string newPlayerID = MakePlayerID(player.GetID());
-                textUI.GetComponent<Text>().text = newPlayerID;
+                // 아니면 새로 할당
+                PlayerIDTextUI textUI = mPlayerNamePool.Alloc();
+                textUI.SetPlayer(player);
+                textUI.transform.SetParent(transform);
 
-                Vector3 pos = Camera.main.WorldToScreenPoint(player.transform.position);
-                textUI.position = new Vector2(pos.x, pos.y + 100);
-
-                mPlayerNameTexts.Add(playerID, textUI.gameObject);
+                mPlayerNameTexts.Add(playerID, textUI);
             }            
         }
 
-        /*
-         * 이미 없어진 플레이어의 ID는 삭제해야된다.
-         */
-        foreach(var item in mPlayerNameTexts)
+        // 이미 없어진 플레이어의 ID는 삭제해야된다.
+        foreach (var item in mPlayerNameTexts)
         {
             int playerID = item.Key;
 
@@ -75,17 +67,12 @@ public class GameSceneGUIHandler : MonoBehaviour
 
         foreach(var playerID in mRemovedPlayerID)
         {
-            GameObject textUI = mPlayerNameTexts[playerID];
+            PlayerIDTextUI textUI = mPlayerNameTexts[playerID];
             mPlayerNameTexts.Remove(playerID);
 
-            Destroy(textUI);
+            mPlayerNamePool.Free(textUI);
         }
 
         mRemovedPlayerID.Clear();
-    }
-
-    private string MakePlayerID(int playerID)
-    {
-        return "Player : " + playerID;
     }
 }

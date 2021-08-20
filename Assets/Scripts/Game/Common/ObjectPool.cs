@@ -13,7 +13,7 @@ public class ObjectPool<T> where T : PoolObject
     private int mUseCount;
     private GameObject mPrefab;
 
-    public ObjectPool(int capacity, GameObject prefab)
+    public ObjectPool(int capacity, GameObject prefab, Transform parent = null)
     {
         mStack = new Stack<T>();
         mUseCount = 0;
@@ -22,6 +22,8 @@ public class ObjectPool<T> where T : PoolObject
         for (int i = 0; i < capacity; i++)
         {
             GameObject obj = GameObject.Instantiate(mPrefab);
+            obj.transform.SetParent(parent);
+            obj.SetActive(false);
             mStack.Push(obj.GetComponent<T>());
         }
     }
@@ -38,9 +40,9 @@ public class ObjectPool<T> where T : PoolObject
         {
             poolObject = mStack.Pop();
         }
-        
-        GameObject go = poolObject as GameObject;
-        go.SetActive(true);
+
+        MonoBehaviour go = poolObject as MonoBehaviour;
+        go.gameObject.SetActive(true);
 
         go.GetComponent<PoolObject>().Initialize();
         mUseCount += 1;
@@ -50,8 +52,8 @@ public class ObjectPool<T> where T : PoolObject
 
     public void Free(T poolObject)
     {
-        GameObject obj = poolObject as GameObject;
-        obj.SetActive(false);
+        MonoBehaviour obj = poolObject as MonoBehaviour;
+        obj.gameObject.SetActive(false);
 
         mStack.Push(poolObject);
         mUseCount -= 1;
