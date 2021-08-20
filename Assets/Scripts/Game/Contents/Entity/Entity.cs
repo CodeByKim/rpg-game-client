@@ -24,6 +24,11 @@ public abstract class Entity : MonoBehaviour
         mSprite = GetComponent<SpriteRenderer>();
     }
 
+    public int GetID()
+    {
+        return mID;
+    }
+
     public abstract void OnHit(int hp);
 
     public abstract void OnDead();
