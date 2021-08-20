@@ -10,7 +10,7 @@ public class ResourcesLoader
     public enum ResourceType
     {
         Prefab,
-        Sound
+        Sound,        
     }
 
     public ResourcesLoader()
@@ -19,7 +19,7 @@ public class ResourcesLoader
         mSounds = new Dictionary<string, AudioClip>();
     }
 
-    public void Load(ResourceType type, string path = null)
+    public void Load(ResourceType type, string path)
     {
         switch (type)
         {
@@ -43,40 +43,20 @@ public class ResourcesLoader
         return mSounds[name];
     }
 
-    private void LoadPrefabs(string path = null)
+    private void LoadPrefabs(string path)
     {
-        string resourcePath; 
-        if(path == null)
+        GameObject[] prefabs = Resources.LoadAll<GameObject>(path);
+                
+        foreach (var item in prefabs)
         {
-            resourcePath = "Prefabs/";
-        }
-        else
-        {
-            resourcePath = System.IO.Path.Combine("Prefabs/", path);
-        }
-        
-        GameObject[] prefabs = Resources.LoadAll<GameObject>(resourcePath);
-
-        foreach(var item in prefabs)
-        {
-            string name = item.name;
+            string name = item.name;            
             mPrefabs.Add(name, item);
-        }        
+        }
     }
 
-    private void LoadSounds(string path = null)
-    {
-        string resourcePath;
-        if (path == null)
-        {
-            resourcePath = "Sounds/";
-        }
-        else
-        {
-            resourcePath = System.IO.Path.Combine("Sounds/", path);
-        }
-
-        AudioClip[] prefabs = Resources.LoadAll<AudioClip>(resourcePath);
+    private void LoadSounds(string path)
+    {        
+        AudioClip[] prefabs = Resources.LoadAll<AudioClip>(path);
 
         foreach (var item in prefabs)
         {

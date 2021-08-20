@@ -2,19 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IFxController
+public interface IResourceController
 {
     void OnInitialize(ResourcesLoader loader);    
 }
 
-public class VFXController : MonoBehaviour, IFxController
+public class VFXController : MonoBehaviour, IResourceController
 {    
     private ResourcesLoader mLoader;
 
     public void OnInitialize(ResourcesLoader loader)
-    {        
+    {
         mLoader = loader;
-        mLoader.Load(ResourcesLoader.ResourceType.Prefab, "Fx");
+        mLoader.Load(ResourcesLoader.ResourceType.Prefab, "Fx");        
     }
 
     public void Play(string name, Vector3 pos)

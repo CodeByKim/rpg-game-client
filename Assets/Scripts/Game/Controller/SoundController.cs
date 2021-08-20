@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SoundController : MonoBehaviour, IFxController
+public class SoundController : MonoBehaviour, IResourceController
 {    
     private AudioSource mAudio;
     private ResourcesLoader mLoader;
@@ -12,7 +12,7 @@ public class SoundController : MonoBehaviour, IFxController
         mAudio = GetComponent<AudioSource>();
 
         mLoader = loader;
-        mLoader.Load(ResourcesLoader.ResourceType.Sound);
+        mLoader.Load(ResourcesLoader.ResourceType.Sound, "Sounds");
     }
 
     public void Play(string name)

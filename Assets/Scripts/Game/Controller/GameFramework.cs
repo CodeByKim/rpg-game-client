@@ -7,7 +7,7 @@ public class GameFramework : MonoBehaviour
 {
     private static ResourcesLoader mLoader;
     private static Dictionary<System.Type, GameLogic> mLogics;
-    private static Dictionary<System.Type, IFxController> mResourceControllers;
+    private static Dictionary<System.Type, IResourceController> mResourceControllers;
 
     public static int MyID;
     
@@ -17,7 +17,7 @@ public class GameFramework : MonoBehaviour
         return mLogics[type] as T;
     }
 
-    public static T GetController<T>() where T : class, IFxController
+    public static T GetController<T>() where T : class, IResourceController
     {
         System.Type type = typeof(T);
         return mResourceControllers[type] as T;
@@ -36,11 +36,6 @@ public class GameFramework : MonoBehaviour
     public static AudioClip GetSound(string name)
     {
         return mLoader.GetSound(name);
-    }
-
-    public static void LoadResources(ResourcesLoader.ResourceType type, string path)
-    {        
-        mLoader.Load(type, path);
     }
 
     private void Awake()
@@ -64,13 +59,13 @@ public class GameFramework : MonoBehaviour
     private void RegisterResourceController()
     {
         mLoader = new ResourcesLoader();
-        mResourceControllers = new Dictionary<System.Type, IFxController>();
+        mResourceControllers = new Dictionary<System.Type, IResourceController>();
 
         Transform controllerParent = transform.Find("Resource Controllers");
 
         for (int i = 0; i < controllerParent.childCount; i++)
         {
-            IFxController controller = controllerParent.GetChild(i).GetComponent<IFxController>();
+            IResourceController controller = controllerParent.GetChild(i).GetComponent<IResourceController>();
             controller.OnInitialize(mLoader);
 
             mResourceControllers.Add(controller.GetType(), controller);
