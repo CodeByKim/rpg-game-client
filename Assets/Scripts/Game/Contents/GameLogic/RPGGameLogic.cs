@@ -99,7 +99,7 @@ public class RPGGameLogic : GameLogic
         if (type == Monster.TYPE_A)
             monster = mPrefabController.Create("Monster A").GetComponent<Monster>();        
         else
-            monster = mPrefabController.Create("Monster B").GetComponent<Monster>();
+            monster = mPrefabController.Create("Monster C").GetComponent<Monster>();
 
         monster.Initialize(id, dir, x, z);
         mMonsters.Add(id, monster);
