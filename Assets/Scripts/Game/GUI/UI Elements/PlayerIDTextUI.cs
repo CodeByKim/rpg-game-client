@@ -31,7 +31,7 @@ public class PlayerIDTextUI : MonoBehaviour, PoolObject
     public void UpdatePosition()
     {        
         Vector3 pos = Camera.main.WorldToScreenPoint(mPlayer.transform.position);
-        transform.position = new Vector2(pos.x, pos.y + 100);
+        transform.position = new Vector2(pos.x, pos.y + 50);
     }
 
     private string MakePlayerID(int playerID)
