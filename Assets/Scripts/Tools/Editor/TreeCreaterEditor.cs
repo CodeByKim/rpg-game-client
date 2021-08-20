@@ -12,9 +12,14 @@ public class TreeCreaterEditor : Editor
 
         TreeCreater creater = target as TreeCreater;
 
-        if (GUILayout.Button("Create Trees..."))
+        if (GUILayout.Button("Create Trees"))
         {
-            creater.Create();
+            creater.CreateTree();
+        }
+
+        if (GUILayout.Button("Create Plants"))
+        {
+            creater.CreatePlants();
         }
     }
 }

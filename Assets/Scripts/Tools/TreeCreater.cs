@@ -4,16 +4,20 @@ using UnityEngine;
 
 public class TreeCreater : MonoBehaviour
 {
+    [Header("Prefabs")]    
     [SerializeField] private GameObject[] treePrefab;
-    [SerializeField] private int count;
+    [SerializeField] private GameObject[] plantsPrefab;    
 
-    public void Create()
+    [SerializeField] private int treeCount;
+    [SerializeField] private int plantsCount;
+
+    public void CreateTree()
     {
         Transform root = GameObject.Find("Env").transform;
         GameObject parent = new GameObject("Trees");
         parent.transform.SetParent(root);
 
-        for (int i = 0; i < count; i++)
+        for (int i = 0; i < treeCount; i++)
         {
             Vector3 pos = new Vector3(Random.Range(0, 1000), 0, Random.Range(0, 1000));
 
@@ -21,6 +25,23 @@ public class TreeCreater : MonoBehaviour
             GameObject tree = Instantiate(treePrefab[treeType]);
             tree.transform.position = pos;
             tree.transform.SetParent(parent.transform);
+        }
+    }
+
+    public void CreatePlants()
+    {
+        Transform root = GameObject.Find("Env").transform;
+        GameObject parent = new GameObject("Plants");
+        parent.transform.SetParent(root);
+
+        for (int i = 0; i < plantsCount; i++)
+        {
+            Vector3 pos = new Vector3(Random.Range(0, 1000), 0, Random.Range(0, 1000));
+
+            int treeType = Random.Range(0, plantsPrefab.Length);
+            GameObject plant = Instantiate(plantsPrefab[treeType]);
+            plant.transform.position = pos;
+            plant.transform.SetParent(parent.transform);
         }
     }
 }

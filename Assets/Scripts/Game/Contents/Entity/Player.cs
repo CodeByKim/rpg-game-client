@@ -105,6 +105,8 @@ public class Player : Entity
         }
 
         Move();
+
+        // TODO : 공통 부분으로 묶자.
         mSprite.sortingOrder = Mathf.RoundToInt(transform.position.z) * -1;
     }
 
