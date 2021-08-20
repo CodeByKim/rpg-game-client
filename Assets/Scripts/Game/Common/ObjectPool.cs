@@ -9,44 +9,50 @@ public interface PoolObject
 
 public class ObjectPool<T> where T : PoolObject
 {
-    private Stack<PoolObject> mStack;
+    private Stack<T> mStack;
     private int mUseCount;
     private GameObject mPrefab;
 
     public ObjectPool(int capacity, GameObject prefab)
     {
-        mStack = new Stack<PoolObject>();
+        mStack = new Stack<T>();
         mUseCount = 0;
         mPrefab = prefab;
 
         for (int i = 0; i < capacity; i++)
         {
             GameObject obj = GameObject.Instantiate(mPrefab);
-            mStack.Push(obj.GetComponent<PoolObject>());
+            mStack.Push(obj.GetComponent<T>());
         }
     }
 
     public T Alloc()
     {
-        PoolObject poolObject;        
+        T poolObject;        
         if (mStack.Count == 0)
-        {
-            GameObject newObj = GameObject.Instantiate(mPrefab);
-            poolObject = newObj.GetComponent<PoolObject>();
+        {            
+            GameObject obj = GameObject.Instantiate(mPrefab);
+            poolObject = obj.GetComponent<T>();
         }
         else
         {
             poolObject = mStack.Pop();
         }
+        
+        GameObject go = poolObject as GameObject;
+        go.SetActive(true);
 
-        poolObject.Initialize();
+        go.GetComponent<PoolObject>().Initialize();
         mUseCount += 1;
 
-        return (T)poolObject;
+        return poolObject;
     }
 
     public void Free(T poolObject)
-    {        
+    {
+        GameObject obj = poolObject as GameObject;
+        obj.SetActive(false);
+
         mStack.Push(poolObject);
         mUseCount -= 1;
     }

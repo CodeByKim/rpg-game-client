@@ -3,14 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerIDTextUI : PoolObject
-{
-    public void Initialize()
-    {
-        
-    }
-}
-
 public class GameSceneGUIHandler : MonoBehaviour
 {
     private RPGGameLogic mLogic;
