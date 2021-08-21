@@ -11,7 +11,35 @@ public class Player : Entity
     private List<InputButton> mInputButtons;
     private bool IsAttacking => mAnimator.GetBool("IsAttack");
     private bool mIsMoving;
-    
+
+    public override MoveDirection Direction 
+    { 
+        get => base.Direction; 
+        set
+        {
+            mDirection = value;
+
+            switch (mDirection.GetValue())
+            {
+                case MoveDirection.MOVE_LEFT:
+                    mAnimator.SetTrigger("Left");
+                    break;
+
+                case MoveDirection.MOVE_UP:
+                    mAnimator.SetTrigger("Up");
+                    break;
+
+                case MoveDirection.MOVE_RIGHT:
+                    mAnimator.SetTrigger("Right");
+                    break;
+
+                case MoveDirection.MOVE_DOWN:
+                    mAnimator.SetTrigger("Down");
+                    break;
+            }
+        }
+    }
+
     public override void Initialize(int id, byte dir, float x, float z)
     {
         base.Initialize(id, dir, x, z);
@@ -43,14 +71,14 @@ public class Player : Entity
 
         if(!mIsMoving)
         {
-            mDirection = direction;
+            Direction = direction;
             mIsMoving = true;
 
-            Protocol.SEND_PLAYER_MOVE_START(mDirection.GetValue(), 
+            Protocol.SEND_PLAYER_MOVE_START(Direction.GetValue(), 
                                             transform.position.x, 
                                             transform.position.z);
 
-            PlayMoveAnimation(mDirection);
+            PlayMoveAnimation(Direction);
         }        
     }
 
@@ -61,7 +89,7 @@ public class Player : Entity
             return;
         }
 
-        Protocol.SEND_PLAYER_ATTACK(mDirection.GetValue(),
+        Protocol.SEND_PLAYER_ATTACK(Direction.GetValue(),
                                     transform.position.x,
                                     transform.position.z);
 
@@ -71,21 +99,21 @@ public class Player : Entity
 
     public void RemoteMoveStart(byte dir, float x, float z)
     {
-        mDirection = new MoveDirection(dir);
-        PlayMoveAnimation(mDirection);
+        Direction = new MoveDirection(dir);
+        PlayMoveAnimation(Direction);
         mIsMoving = true;
     }
 
     public void RemoteMoveEnd(byte dir, float x, float z)
     {
-        mDirection = new MoveDirection(dir);
+        Direction = new MoveDirection(dir);
         mIsMoving = false;
         mAnimator.SetBool("IsMove", false);
     }
 
     public void RemoteAttack(byte dir, float x, float z)
     {
-        mDirection = new MoveDirection(dir);
+        Direction = new MoveDirection(dir);
         transform.position = new Vector3(x, 0, z);
 
         GameFramework.GetController<SoundController>().Play("Attack");        
@@ -124,7 +152,7 @@ public class Player : Entity
             mIsMoving = false;
             mAnimator.SetBool("IsMove", false);
 
-            Protocol.SEND_PLAYER_MOVE_END(mDirection.GetValue(), 
+            Protocol.SEND_PLAYER_MOVE_END(Direction.GetValue(), 
                                           transform.position.x, 
                                           transform.position.z);
         }
@@ -157,23 +185,19 @@ public class Player : Entity
 
         switch (direction.GetValue())
         {
-            case MoveDirection.MOVE_LEFT:
-                //mSprite.flipX = false;
+            case MoveDirection.MOVE_LEFT:                
                 mAnimator.SetTrigger("Left");
                 break;
 
-            case MoveDirection.MOVE_UP:
-                //mSprite.flipX = false;
+            case MoveDirection.MOVE_UP:                
                 mAnimator.SetTrigger("Up");
                 break;
 
             case MoveDirection.MOVE_RIGHT:
-                //mSprite.flipX = true;
                 mAnimator.SetTrigger("Right");
                 break;
 
             case MoveDirection.MOVE_DOWN:
-                //mSprite.flipX = false;
                 mAnimator.SetTrigger("Down");
                 break;
         }

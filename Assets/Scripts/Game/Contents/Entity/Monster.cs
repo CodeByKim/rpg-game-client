@@ -30,14 +30,13 @@ public class Monster : Entity
     {        
         GameFramework.GetController<SoundController>().Play("Dead");
 
-        //StartCoroutine(DeadRoutine());
-        Destroy(gameObject);
+        StartCoroutine(DeadRoutine());        
     }
 
     private IEnumerator DeadRoutine()
     {        
-        mAnimator.SetTrigger("Dead");
-        yield return new WaitForSeconds(1);
+        //mAnimator.SetTrigger("Dead");
+        yield return new WaitForSeconds(.1f);
 
         Destroy(gameObject);
     }

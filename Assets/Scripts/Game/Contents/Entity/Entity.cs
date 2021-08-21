@@ -14,14 +14,20 @@ public abstract class Entity : MonoBehaviour
     protected Animator mAnimator;
     protected SpriteRenderer mSprite;
 
-    public virtual void Initialize(int id, byte dir, float x, float z)
+    public virtual MoveDirection Direction
     {
-        mID = id;
-        mDirection = new MoveDirection(dir);
-        transform.position = new Vector3(x, 0, z);        
+        get { return mDirection; }
+        set { mDirection = value; }        
+    }
 
+    public virtual void Initialize(int id, byte dir, float x, float z)
+    {       
         mAnimator = GetComponent<Animator>();
         mSprite = GetComponent<SpriteRenderer>();
+
+        mID = id;
+        Direction = new MoveDirection(dir);
+        transform.position = new Vector3(x, 0, z);
     }
 
     public int GetID()
